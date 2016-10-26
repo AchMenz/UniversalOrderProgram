@@ -4,5 +4,4 @@ Makefile
 moc_*
 *.pro
 ui_*
-src # Das ist die Datei womit man das Programm ausführen würde.
 *.ec # Datei die das Programm startet 
