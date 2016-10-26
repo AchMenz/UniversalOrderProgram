@@ -4,4 +4,6 @@ Makefile
 moc_*
 *.pro
 ui_*
-*.ec # Datei die das Programm startet 
+
+# Datei die das Programm startet 
+*.ec 
