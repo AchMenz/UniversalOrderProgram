@@ -1,36 +1,7 @@
-# Compiled Object files
-*.slo
-*.lo
+#Die Dateien, die beim compilieren erstellt wurden, werden hiermit bein commiten/pushen ignoriert.
 *.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
-
-
-#Richard
 Makefile
 moc_*
 *.pro
 ui_*
+src # Das ist die Datei womit man das Programm ausführen würde.
