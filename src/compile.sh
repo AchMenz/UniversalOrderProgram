@@ -7,3 +7,5 @@ qmake;
 make;
 
 rm Makefile moc_* *.pro ui_* *.o
+
+mv ${PWD##*/} executeMe.ec
