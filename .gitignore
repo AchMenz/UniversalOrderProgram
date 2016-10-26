@@ -27,3 +27,10 @@
 *.exe
 *.out
 *.app
+
+
+#Richard
+Makefile
+moc_*
+*.pro
+ui_*
