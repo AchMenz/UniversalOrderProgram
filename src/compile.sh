@@ -6,4 +6,4 @@ qmake -project;
 qmake;
 make;
 
-rm *.o Makefile moc_* *.pro ui_*
+rm Makefile moc_* *.pro ui_* *.o
