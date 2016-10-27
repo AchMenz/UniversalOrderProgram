@@ -19,9 +19,13 @@ class Oberflache : public QMainWindow, public Ui::MainWindow{
 		
 	private slots:
 		void generiereWare();
+		void WareZuBestellListe();
+		void beenden();
+		void versendeEmail();
+		void anzeigenWareEigenschaft();
 		
 	private:
-		vector<Ware> warenListe;
+		vector<Ware> warenVector;
 		//vector<int> second = vector<int> (4,100); 
 		//vector< vector<string> > second;
 		

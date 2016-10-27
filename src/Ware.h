@@ -9,17 +9,18 @@ using namespace std;
 
 class Ware{
 	public:
-		Ware(float m, string n, string wn, float p);
+		Ware(float m, string n, string wpn, float p);
 		~Ware();
 		float getMenge();
-		string getName();
 		string getWarenName();
+		string getWarenGruppeName();
 		float getPreis();
+		
 		
 	private:
 	float menge;
-	string name;
 	string warenName;
+	string warenGruppeName;
 	float preis;
 };
 #endif
