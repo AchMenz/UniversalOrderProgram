@@ -9,18 +9,27 @@ using namespace std;
 
 class Ware{
 	public:
-		Ware(float m, string n, string wpn, float p);
+		Ware(string wn, string wgn, float ppg, float pps, float mig, float mis, string k);
 		~Ware();
-		float getMenge();
+		
 		string getWarenName();
 		string getWarenGruppeName();
-		float getPreis();
+		float getPreisProGewicht();
+		float getPreisProStueck();
+		float getMengeInGewicht();
+		float getMengeInStueck();
+		string getKommentar();
 		
 		
 	private:
-	float menge;
+	
 	string warenName;
 	string warenGruppeName;
-	float preis;
+	string info;
+	float preisProGewicht;
+	float preisProStueck;
+	float mengeInGewicht;
+	float mengeInStueck;
+	string kommentar;
 };
 #endif
