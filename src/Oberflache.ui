@@ -344,16 +344,6 @@
         <string>Kommentar</string>
        </property>
       </widget>
-      <widget class="QTextEdit" name="WarenGruppeInfoEdit">
-       <property name="geometry">
-        <rect>
-         <x>110</x>
-         <y>80</y>
-         <width>281</width>
-         <height>111</height>
-        </rect>
-       </property>
-      </widget>
       <widget class="QPushButton" name="WarenGruppeHinzuPB">
        <property name="geometry">
         <rect>
@@ -378,6 +368,19 @@
        </property>
        <property name="text">
         <string>WarenGruppe hinzufügen</string>
+       </property>
+      </widget>
+      <widget class="QPlainTextEdit" name="WarenGruppeInfoEdit">
+       <property name="geometry">
+        <rect>
+         <x>110</x>
+         <y>80</y>
+         <width>104</width>
+         <height>78</height>
+        </rect>
+       </property>
+       <property name="horizontalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOn</enum>
        </property>
       </widget>
      </widget>

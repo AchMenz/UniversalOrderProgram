@@ -5,6 +5,7 @@
 #include <QString>
 #include <vector>
 #include <string> 
+#include <Warengruppe.h>
 
 #include <sstream>
 
@@ -16,15 +17,18 @@ Oberflache::Oberflache(QMainWindow *parent) : QMainWindow(parent){
 	
 //Daten aus Datenbank lesen	sortiert
 	
-	Ware Schinken = Ware("Schinken","Fleisch",3.3,3.3,3.0,3.0,"kommentar Schinken");//debugging
-	Ware Banane = Ware("Banane","Obst",2.5,2.5,2.0,2.0,"kommentar Banane");//debugging
-	Ware Paprika = Ware("Paprika","Gemuese",2.4,2.4,2.1,2.1,"kommentar Paprika");//debugging
-	Ware Salami = Ware("Salami","Fleisch",2.2,2.2,1.9,1.9,"kommentar Salami");//debugging
+	Ware Schinken = Ware("Schinken","Fleisch",3.3,3.4,3.5,3.6,"kommentar Schinken");//debugging
+	Ware Banane = Ware("Banane","Obst",2.5,2.6,2.7,2.8,"kommentar Banane");//debugging
+	Ware Paprika = Ware("Paprika","Gemuese",2.4,2.5,2.6,2.7,"kommentar Paprika");//debugging
+	Ware Salami = Ware("Salami","Fleisch",2.2,2.3,2.4,2.5,"kommentar Salami");//debugging
 	
 	warenVector.push_back(Salami);//debugging
 	warenVector.push_back(Schinken);//debugging
 	warenVector.push_back(Paprika);//debugging
 	warenVector.push_back(Banane);//debugging
+	
+	std::cout << "test" << std::endl;
+	
 	
 	//ALT
 	/*Ware Schinken = Ware(1,"Schinken","Fleisch",3.3);//debugging
@@ -40,9 +44,34 @@ Oberflache::Oberflache(QMainWindow *parent) : QMainWindow(parent){
 	
 //Daten werden auf Oberfläche geladen	
 	for(unsigned i3 = 0;i3<warenVector.size();++i3){
-	
-	
-	
+		WarenTW->insertRow( WarenTW->rowCount() );
+		
+		std::stringstream ppgss;
+			ppgss<<warenVector[i3].getPreisProGewicht();
+			std::string ppg = ppgss.str();
+			
+		std::stringstream ppsss;
+			ppsss<<warenVector[i3].getPreisProStueck();
+			std::string pps = ppsss.str();
+			
+		std::stringstream migss;
+			migss<<warenVector[i3].getMengeInGewicht();
+			std::string mig = migss.str();
+			
+		std::stringstream misss;
+			misss<<warenVector[i3].getMengeInStueck();
+			std::string mis = misss.str();
+		
+		WarenTW->setItem(i3, 0, new QTableWidgetItem(QString::fromStdString(warenVector[i3].getWarenName())));
+		WarenTW->setItem(i3, 1, new QTableWidgetItem(QString::fromStdString(warenVector[i3].getWarenGruppeName())));
+		WarenTW->setItem(i3, 2, new QTableWidgetItem(QString::fromStdString(ppg)));
+		WarenTW->setItem(i3, 3, new QTableWidgetItem(QString::fromStdString(pps)));
+		WarenTW->setItem(i3, 4, new QTableWidgetItem(QString::fromStdString(mig)));
+		WarenTW->setItem(i3, 5, new QTableWidgetItem(QString::fromStdString(mis)));
+		
+		//for(unsigned i4 = 0;i4<7;++i4){
+		//	WarenTW->setItem(i3, i4, new QTableWidgetItem("Hello"));
+		//}
 	
 	//ALT
 	//string s = warenVector[i].getName(); 
@@ -53,7 +82,8 @@ Oberflache::Oberflache(QMainWindow *parent) : QMainWindow(parent){
 		
 	connect(WareHinzuPB, SIGNAL(clicked()), this, SLOT(generiereWare()));
 	connect(schliesenButton, SIGNAL(clicked()), this, SLOT(beenden()));
-	connect(versendenButton, SIGNAL(clicked()), this, SLOT(versendeEmail()));	
+	connect(versendenButton, SIGNAL(clicked()), this, SLOT(versendeEmail()));
+	connect(WarenGruppeHinzuPB, SIGNAL(clicked()), this, SLOT(generiereWarenGruppe()));	
 	
 	//ALT
 	//Oberfläche reagiert auf aktion vom User
@@ -152,6 +182,26 @@ void Oberflache::generiereWare(){
 		std::cout << "versendeEmail" << std::endl;//debugging
 	//JÖRG!!!!
 	//hier soll die email generiert werden und dann mit einem EmailProgramm(Thunderbird) verschickt werden
+	}
+	
+	void Oberflache::generiereWarenGruppe(){
+		Warengruppe wp = Warengruppe(WarenGruppeHinzuEdit -> text().toStdString(),WarenGruppeInfoEdit -> toPlainText().toStdString());
+		
+		warenGruppeVector.push_back(wp);
+		
+		vector<string> v;
+		
+		for(unsigned i1 = 0;i1<warenGruppeVector.size();++i1){
+		string s = warenGruppeVector[i1].getWarenGruppeName();
+		v.push_back(s);
+		}
+		
+		std::sort(v.begin(), v.end());
+	
+		for(unsigned i2 = 0;i2<v.size();++i2){
+			WarenGruppeCB -> addItem(QString::fromStdString( v[i2] ));
+		}
+	
 	}
 	
 	//ALT

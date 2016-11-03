@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include "Ware.h"
+#include "Warengruppe.h"
 
 using namespace std;
 
@@ -21,11 +22,13 @@ class Oberflache : public QMainWindow, public Ui::MainWindow{
 		void generiereWare();
 		void beenden();
 		void versendeEmail();
+		void generiereWarenGruppe();
 		
 		
 	private:
 		vector<Ware> warenVector;
 		vector<Ware> bestelltWarenVector;
+		vector<Warengruppe> warenGruppeVector;
 		//vector<int> second = vector<int> (4,100); 
 		//vector< vector<string> > second;
 		
