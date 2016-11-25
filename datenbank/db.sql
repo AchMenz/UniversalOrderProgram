@@ -36,12 +36,21 @@ CREATE TABLE Bestellung (
     ID              INTEGER       PRIMARY KEY ASC AUTOINCREMENT,
     Zieldatum       DATE          NOT NULL,
     Zielzeit        TIME,
+    Kommentar       VARCHAR (300)
+);
+
+
+-- Table: Bestellung_Detail
+DROP TABLE IF EXISTS Bestellung_Detail;
+
+CREATE TABLE Bestellung_Detail (
+    ID              INTEGER       PRIMARY KEY ASC AUTOINCREMENT,
     Menge_in_kg     DECIMAL,
     Menge_in_Stueck DECIMAL,
     Bestellpreis    DECIMAL,
     Kommentar       VARCHAR (300),
     ID_Ware         INTEGER       REFERENCES Ware (ID),
-    Zusatzware      VARCHAR (200) 
+    ID_Bestellung   INTEGER       REFERENCES Bestellung (ID)
 );
 
 
@@ -51,12 +60,11 @@ DROP TABLE IF EXISTS Preis_History;
 CREATE TABLE Preis_History (
     ID               INTEGER PRIMARY KEY ASC AUTOINCREMENT,
     Preis_pro_kg     DECIMAL,
+    Preis_pro_Stueck DECIMAL,
     Datum            DATE,
-    aktuell          BOOLEAN NOT NULL
-                             DEFAULT TRUE,
+    Aktuell          BOOLEAN NOT NULL,
     ID_Ware          INTEGER REFERENCES Ware (ID) 
-                             NOT NULL,
-    Preis_pro_Stueck DECIMAL
+                             NOT NULL
 );
 
 
