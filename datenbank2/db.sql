@@ -27,24 +27,6 @@ CREATE TABLE Warengruppe (
     Kommentar TEXT
 );
 
-INSERT INTO Warengruppe (
-                            Name,
-                            Kommentar
-                        )
-                        VALUES (
-                            'Hirsch',
-                            'Hat ein großes Geweih.'
-                        );
-
-INSERT INTO Warengruppe (
-                            Name,
-                            Kommentar
-                        )
-                        VALUES (
-                            'Reh',
-                            'Hat ein großes Geweih.'
-                        );
-
 
 COMMIT TRANSACTION;
 PRAGMA foreign_keys = on;
