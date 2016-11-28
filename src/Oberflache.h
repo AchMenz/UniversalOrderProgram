@@ -25,9 +25,11 @@ class Oberflache : public QMainWindow, public Ui::MainWindow{
 		void versendeEmail();
 		void generiereWarenGruppe();
 		void entferneWare();
+		void zelleaktualisiert(QTableWidgetItem* x);
 		
 		
 	private:
+		//bool b = true;
 		vector<string> warenNameVector;
 		vector<Ware> warenVector;
 		vector<Ware> bestelltWarenVector;

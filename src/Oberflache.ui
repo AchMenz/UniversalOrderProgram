@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1179</width>
+    <width>1254</width>
     <height>728</height>
    </rect>
   </property>
@@ -45,7 +45,7 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>722</width>
+      <width>822</width>
       <height>611</height>
      </rect>
     </property>
@@ -81,6 +81,11 @@
     </column>
     <column>
      <property name="text">
+      <string>Gesamtpreis</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
       <string>Kommentar  </string>
      </property>
     </column>
@@ -88,7 +93,7 @@
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>750</x>
+      <x>840</x>
       <y>10</y>
       <width>411</width>
       <height>601</height>

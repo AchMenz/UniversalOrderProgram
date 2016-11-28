@@ -12,6 +12,14 @@ class Ware{
 		Ware(string wn, string wgn, float ppg, float pps, float mig, float mis, string k);
 		~Ware();
 		
+		void setWarenName(string s);
+		void setWarenGruppeName(string s);
+		void setPreisProGewicht(float f);
+		void setPreisProStueck(float f);
+		void setMengeInGewicht(float f);
+		void setMengeInStueck(float f);
+		void setKommentar(string s);
+		
 		string getWarenName();
 		string getWarenGruppeName();
 		float getPreisProGewicht();
