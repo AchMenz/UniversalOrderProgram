@@ -27,72 +27,23 @@ Oberflache::Oberflache(QMainWindow *parent) : QMainWindow(parent){
 	warenVector.push_back(Paprika);//debugging
 	warenVector.push_back(Banane);//debugging
 	
-	std::cout << "test" << std::endl;
-	
-	
-	//ALT
-	/*Ware Schinken = Ware(1,"Schinken","Fleisch",3.3);//debugging
-	Ware Paprika = Ware(1,"Paprika","Gemuese",2.0);//debugging
-	Ware Banane = Ware(1,"Banane","Obst",4.5);//debugging
-	Ware Salami = Ware(1,"Salami","Fleisch",4.2);//debugging
-	
-	warenVector.push_back(Salami);//debugging
-	warenVector.push_back(Schinken);//debugging
-	warenVector.push_back(Paprika);//debugging
-	warenVector.push_back(Banane);//debugging
-	*/
-	
 //Daten werden auf Oberfläche geladen	
-	for(unsigned i3 = 0;i3<warenVector.size();++i3){
-		WarenTW->insertRow( WarenTW->rowCount() );
-		
-		std::stringstream ppgss;
-			ppgss<<warenVector[i3].getPreisProGewicht();
-			std::string ppg = ppgss.str();
-			
-		std::stringstream ppsss;
-			ppsss<<warenVector[i3].getPreisProStueck();
-			std::string pps = ppsss.str();
-			
-		std::stringstream migss;
-			migss<<warenVector[i3].getMengeInGewicht();
-			std::string mig = migss.str();
-			
-		std::stringstream misss;
-			misss<<warenVector[i3].getMengeInStueck();
-			std::string mis = misss.str();
-		
-		WarenTW->setItem(i3, 0, new QTableWidgetItem(QString::fromStdString(warenVector[i3].getWarenName())));
-		WarenTW->setItem(i3, 1, new QTableWidgetItem(QString::fromStdString(warenVector[i3].getWarenGruppeName())));
-		WarenTW->setItem(i3, 2, new QTableWidgetItem(QString::fromStdString(ppg)));
-		WarenTW->setItem(i3, 3, new QTableWidgetItem(QString::fromStdString(pps)));
-		WarenTW->setItem(i3, 4, new QTableWidgetItem(QString::fromStdString(mig)));
-		WarenTW->setItem(i3, 5, new QTableWidgetItem(QString::fromStdString(mis)));
-		
-		//for(unsigned i4 = 0;i4<7;++i4){
-		//	WarenTW->setItem(i3, i4, new QTableWidgetItem("Hello"));
-		//}
-	
-	//ALT
-	//string s = warenVector[i].getName(); 
-	//new QListWidgetItem(QString::fromStdString( warenVector[i3].getWarenGruppeName() + " " + warenVector[i3].getWarenName() ), WarenList);
+	for(unsigned i3 = 0;i3<warenVector.size();++i3){		
+		warenNameVector.push_back(warenVector[i3].getWarenGruppeName() + " " + warenVector[i3].getWarenName());
+		warenGruppeVector.push_back(Warengruppe(warenVector[i3].getWarenGruppeName(), ""));
 	}
+
+	WarenTW->sortItems(0);
+	this -> aktualisiereOberflaeche();
 	
-	//WarenList -> QListWidget::sortItems();
-		
+	
 	connect(WareHinzuPB, SIGNAL(clicked()), this, SLOT(generiereWare()));
 	connect(schliesenButton, SIGNAL(clicked()), this, SLOT(beenden()));
 	connect(versendenButton, SIGNAL(clicked()), this, SLOT(versendeEmail()));
 	connect(WarenGruppeHinzuPB, SIGNAL(clicked()), this, SLOT(generiereWarenGruppe()));	
-	
-	//ALT
-	//Oberfläche reagiert auf aktion vom User
-	/*connect(generierenButton, SIGNAL(clicked()), this, SLOT(generiereWare()));
-	connect(hinzuButton, SIGNAL(clicked()), this, SLOT(WareZuBestellListe()));
-	connect(schliesenButton, SIGNAL(clicked()), this, SLOT(beenden()));
-	connect(versendenButton, SIGNAL(clicked()), this, SLOT(versendeEmail()));
-	connect(WarenList, SIGNAL(itemSelectionChanged()), this, SLOT(anzeigenWareEigenschaft()));)*/
-	}
+	connect(WarEntfernenPB, SIGNAL(clicked()), this, SLOT(entferneWare()));	
+}
+
 Oberflache::~Oberflache() {
 //Deconstructor	
 
@@ -101,8 +52,59 @@ Oberflache::~Oberflache() {
 void Oberflache::generiereWare(){
 //erstellt neue Ware mit Daten aus Oberfläche
 
-	Ware w1 = Ware((WarenNameHinzuEdit -> text()).toStdString(),"WarenGruppe",0,0,0,0,"");
+	//WarenGruppeCB
+
+	Ware w1 = Ware((WarenNameHinzuEdit -> text()).toStdString(),WarenGruppeCB -> currentText().toStdString(),0,0,0,0,"");
+	string s = w1.getWarenName() + " " + w1.getWarenGruppeName();
 	
+	std::cout << warenVector.size() << std::endl;
+	
+	warenVector.push_back(w1);
+	warenNameVector.push_back(s);
+	
+	std::cout << warenVector.size() << std::endl;
+	
+	/*WarenTW->insertRow( WarenTW->rowCount() );
+	
+	std::stringstream ppgss;
+			ppgss<<w1.getPreisProGewicht();
+			std::string ppg = ppgss.str();
+			
+		std::stringstream ppsss;
+			ppsss<<w1.getPreisProStueck();
+			std::string pps = ppsss.str();
+			
+		std::stringstream migss;
+			migss<<w1.getMengeInGewicht();
+			std::string mig = migss.str();
+			
+		std::stringstream misss;
+			misss<<w1.getMengeInStueck();
+			std::string mis = misss.str();
+		
+		WarenTW->setItem(warenVector.size()-1, 1, new QTableWidgetItem(QString::fromStdString(w1.getWarenName())));
+		WarenTW->setItem(warenVector.size()-1, 0, new QTableWidgetItem(QString::fromStdString(w1.getWarenGruppeName())));
+		WarenTW->setItem(warenVector.size()-1, 2, new QTableWidgetItem(QString::fromStdString(ppg)));
+		WarenTW->setItem(warenVector.size()-1, 3, new QTableWidgetItem(QString::fromStdString(pps)));
+		WarenTW->setItem(warenVector.size()-1, 4, new QTableWidgetItem(QString::fromStdString(mig)));
+		WarenTW->setItem(warenVector.size()-1, 5, new QTableWidgetItem(QString::fromStdString(mis)));
+		
+//setzt bestimmte Zellen auf nicht editierbar
+		Qt::ItemFlags flags;
+		
+		flags = WarenTW->item(warenVector.size()-1, 0)->flags();
+		flags |= Qt::ItemIsSelectable;
+		flags &= ~Qt::ItemIsEditable; 
+		WarenTW->item(warenVector.size()-1, 0)->setFlags(flags);
+		
+		flags = WarenTW->item(warenVector.size()-1, 1)->flags();
+		flags |= Qt::ItemIsSelectable;
+		flags &= ~Qt::ItemIsEditable; 
+		WarenTW->item(warenVector.size()-1, 1)->setFlags(flags);*/
+		
+		WarenTW->sortItems(0);
+		this -> aktualisiereOberflaeche();
+		
 	//ALT
 	//Ware w1 = Ware(1,(WarenNameHinzuEdit -> text()).toStdString(),"WarenGruppe",0);
 
@@ -113,20 +115,20 @@ void Oberflache::generiereWare(){
 	(Preis2Edit -> text()).toDouble()
 	);*/
 	
-	warenVector.push_back(w1);
+	
 	
 	//ALT
 	//new QListWidgetItem(QString::fromStdString( w1.getWarenName() ), WarenList);
 	
 	
-	std::cout << w1.getWarenName() << std::endl;//debugging
-	std::cout << w1.getWarenGruppeName() << std::endl;//debugging
-	std::cout << w1.getPreisProGewicht() << std::endl;//debugging
+	//std::cout << w1.getWarenName() << std::endl;//debugging
+	//std::cout << w1.getWarenGruppeName() << std::endl;//debugging
+	//std::cout << w1.getPreisProGewicht() << std::endl;//debugging
 	
 	
-	std::cout << "" << std::endl;//debugging
-	std::cout << "Laegne der Liste" << std::endl;//debugging
-	std::cout << warenVector.size() << std::endl;//debugging
+	//std::cout << "" << std::endl;//debugging
+	//std::cout << "Laegne der Liste" << std::endl;//debugging
+	//std::cout << warenVector.size() << std::endl;//debugging
 	}
 	
 	
@@ -198,12 +200,109 @@ void Oberflache::generiereWare(){
 		
 		std::sort(v.begin(), v.end());
 	
-		for(unsigned i2 = 0;i2<v.size();++i2){
-			WarenGruppeCB -> addItem(QString::fromStdString( v[i2] ));
-		}
-	
+		//for(unsigned i2 = 0;i2<v.size();++i2){
+		//	WarenGruppeCB -> addItem(QString::fromStdString( v[i2] ));
+		//}
+		this -> aktualisiereOberflaeche();
 	}
 	
+	void Oberflache::aktualisiereOberflaeche(){	
+
+		WareEntfCB -> clear();
+		WarenGruppeCB -> clear();
+		WarenGruppeEntfCB -> clear();
+		WarenTW -> setRowCount(0);
+		
+	//befüllt combo box um waren zu löschen
+		for(unsigned i1 = 0;i1<warenNameVector.size();++i1){
+			WareEntfCB -> addItem(QString::fromStdString(warenNameVector[i1]));
+		}
+	//befüllt combo box um warengruppen zu löschen
+		for(unsigned i2 = 0;i2<warenGruppeVector.size();++i2){
+			WarenGruppeEntfCB -> addItem(QString::fromStdString(warenGruppeVector[i2].getWarenGruppeName()));
+			WarenGruppeCB -> addItem(QString::fromStdString(warenGruppeVector[i2].getWarenGruppeName()));
+		}
+	//befüllt combo box um warengruppen zu löschen
+		for(unsigned i3 = 0;i3<warenVector.size();++i3){
+			WarenTW->insertRow( WarenTW->rowCount() );
+				
+			std::cout << warenVector[i3].getWarenName() << std::endl;
+				
+			
+			
+			std::stringstream ppgss;
+			ppgss<<(warenVector[i3].getPreisProGewicht());
+			std::string ppg = ppgss.str();
+			
+			std::stringstream ppsss;
+			ppsss<<(warenVector[i3].getPreisProStueck());
+			std::string pps = ppsss.str();
+			
+			std::stringstream migss;
+			migss<<(warenVector[i3].getMengeInGewicht());
+			std::string mig = migss.str();
+			
+			std::stringstream misss;
+			misss<<(warenVector[i3].getMengeInStueck());
+			std::string mis = misss.str();
+			
+			WarenTW->setItem(i3, 1, new QTableWidgetItem(QString::fromStdString(warenVector[i3].getWarenName())));
+			WarenTW->setItem(i3, 0, new QTableWidgetItem(QString::fromStdString(warenVector[i3].getWarenGruppeName())));
+			WarenTW->setItem(i3, 2, new QTableWidgetItem(QString::fromStdString(ppg)));
+			WarenTW->setItem(i3, 3, new QTableWidgetItem(QString::fromStdString(pps)));
+			WarenTW->setItem(i3, 4, new QTableWidgetItem(QString::fromStdString(mig)));
+			WarenTW->setItem(i3, 5, new QTableWidgetItem(QString::fromStdString(mis)));
+		
+			Qt::ItemFlags flags;
+		
+			flags = WarenTW->item(i3, 0)->flags();
+			flags |= Qt::ItemIsSelectable;
+			flags &= ~Qt::ItemIsEditable; 
+			WarenTW->item(i3, 0)->setFlags(flags);
+			
+			flags = WarenTW->item(i3, 1)->flags();
+			flags |= Qt::ItemIsSelectable;
+			flags &= ~Qt::ItemIsEditable; 
+			WarenTW->item(i3, 1)->setFlags(flags);
+		}
+		/*Qt::ItemFlags flags;
+		
+		flags = WarenTW->item(warenVector.size()-1, 0)->flags();
+		flags |= Qt::ItemIsSelectable;
+		flags &= ~Qt::ItemIsEditable; 
+		WarenTW->item(warenVector.size()-1, 0)->setFlags(flags);
+		
+		flags = WarenTW->item(warenVector.size()-1, 1)->flags();
+		flags |= Qt::ItemIsSelectable;
+		flags &= ~Qt::ItemIsEditable; 
+		WarenTW->item(warenVector.size()-1, 1)->setFlags(flags);*/
+	}
+	
+	void Oberflache::entferneWare(){
+		string s = 	WareEntfCB -> currentText().toStdString();
+		
+		std::cout << s << std::endl;
+	
+		for(unsigned i1 = 0;i1<warenVector.size();++i1){
+			//if(strcmp(warenVector[i1].getWarenName() + " " + warenVector[i1].getWarenGruppeName(),s) == 0){
+				
+				//std::cout << warenVector[i1].getWarenGruppeName() + " " + warenVector[i1].getWarenName() << std::endl;
+				
+			if( (warenVector[i1].getWarenGruppeName()+ " " + warenVector[i1].getWarenName() ).compare(s) == 0){
+				warenVector.erase(warenVector.begin()+ i1 );
+				break;
+			}
+		}
+		for(unsigned i2 = 0;i2<warenNameVector.size();++i2){
+			std::cout << warenNameVector[i2] << std::endl;
+			if(warenNameVector[i2].compare(s) == 0){
+				warenNameVector.erase(warenNameVector.begin() + i2 );
+				break;
+			}
+		}
+		this -> aktualisiereOberflaeche();
+		
+	}
 	//ALT
 	/*void Oberflache::anzeigenWareEigenschaft(){
 	//zeigt preis und Menge auf Oberfläche an

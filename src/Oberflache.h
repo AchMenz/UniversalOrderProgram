@@ -17,15 +17,18 @@ class Oberflache : public QMainWindow, public Ui::MainWindow{
  	public:
  		Oberflache (QMainWindow *parent = 0);
  		~Oberflache();
+		void aktualisiereOberflaeche();
 		
 	private slots:
 		void generiereWare();
 		void beenden();
 		void versendeEmail();
 		void generiereWarenGruppe();
+		void entferneWare();
 		
 		
 	private:
+		vector<string> warenNameVector;
 		vector<Ware> warenVector;
 		vector<Ware> bestelltWarenVector;
 		vector<Warengruppe> warenGruppeVector;

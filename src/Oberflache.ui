@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1500</width>
-    <height>1500</height>
+    <width>1179</width>
+    <height>728</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <widget class="QPushButton" name="versendenButton">
     <property name="geometry">
      <rect>
-      <x>860</x>
+      <x>1020</x>
       <y>630</y>
       <width>121</width>
       <height>27</height>
@@ -30,7 +30,7 @@
    <widget class="QPushButton" name="schliesenButton">
     <property name="geometry">
      <rect>
-      <x>760</x>
+      <x>920</x>
       <y>630</y>
       <width>91</width>
       <height>27</height>
@@ -45,18 +45,18 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>841</width>
+      <width>722</width>
       <height>611</height>
      </rect>
     </property>
     <column>
      <property name="text">
-      <string>WarenName</string>
+      <string>WarenGruppe</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Warengruppe</string>
+      <string>WarenName</string>
      </property>
     </column>
     <column>
@@ -81,14 +81,14 @@
     </column>
     <column>
      <property name="text">
-      <string>Kommentar</string>
+      <string>Kommentar  </string>
      </property>
     </column>
    </widget>
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>1070</x>
+      <x>750</x>
       <y>10</y>
       <width>411</width>
       <height>601</height>
