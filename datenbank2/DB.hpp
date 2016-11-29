@@ -38,10 +38,10 @@ public:
 
 
    //Inserts
-   //fügt einen Datensatz in Warengruppe ein
+   //fügt einen Datensatz in Tabelle Warengruppe ein
    void insertRecordWarengruppe(std::string name, std::string kommentar = "");
    
-   //fügt einen Datensatz in Ware ein
+   //fügt einen Datensatz in Tabelle Ware ein
    void insertRecordWare(std::string name, std::string warengruppe);
    
    

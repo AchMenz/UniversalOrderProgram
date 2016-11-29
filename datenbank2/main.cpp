@@ -5,6 +5,7 @@
 
 int main(int argc, char **argv)
 {
+	//erzeugt datenbankobjekt mit name db
    DB db("db");
 //   db.insertRecordWarengruppe("Reh", "Hat ein kleines Gehörn.");
 //   db.insertRecordWarengruppe("Hirsch", "Hat ein großes Geweih.");
