@@ -6,7 +6,7 @@
 class Stelle
 {
 public:
-   Stelle(std::string Name, std::string Emailadresse, std::string Adresse = "");
+   Stelle(std::string Name, std::string Emailadresse, std::string Adresse);
    ~Stelle();
 
    std::string getName();

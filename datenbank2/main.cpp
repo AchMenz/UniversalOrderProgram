@@ -10,7 +10,7 @@ int main(int argc, char **argv)
 {
 //DB erzeugen etc.
 	//erzeugt datenbankobjekt mit name db
-   //DB db("db");
+   DB db("db");
 
    //erzeugt Tabellen in der Datenbank db, auf Grundlage der Datei: "db.sql"
    //db.createTables(Helper::getSqlFromFile("db.sql"));
@@ -30,7 +30,8 @@ int main(int argc, char **argv)
 //   db.insertRecordWare("Lende", "Hirsch");
 //   db.insertRecordWare("Wurstfleisch", "Reh");
 //
-
+//   db.insertRecordAbsender("Wildhandel Broy", "Wildhandel Broy\nStraße des Aufbaus 5\n04808 Wurzen", "wildhandelbroy@aol.com");
+//   db.insertRecordEmpfaenger("Wursthandel Jankowski", "Wursthandel Jankowski\nStraße der Revolution 10\n02373 Warschau", "jankowski@web.de");
 
 
 
@@ -63,7 +64,7 @@ int main(int argc, char **argv)
 
 
 //Hohle Daten
-   //Hohle einen Vector mit Strings von "Warengruppen" aus er DB.
+   //Hohle einen Vector mit Strings von "Warengruppen" aus der DB.
 //   std::vector<std::string> testVect = db.getAlleWarengruppenFromDB();
 //   for (std::string i : testVect)
 //   {
@@ -78,11 +79,21 @@ int main(int argc, char **argv)
 //      << ", " << i.getPreisProStueck() << ", " << i.getKommentar() << std::endl;
 //   }
 
+   //Hohle einen Vector mit Strings von "Empfaenger" aus der DB
+//   std::vector<std::string> testVect = db.getAlleEmpfaengerNamen();
+//   for (std::string i : testVect)
+//   {
+//      std::cout << i << std::endl;
+//   }
 
-
-
+   //Hohle einen Vector mit "Stellen" aus der DB
+   std::vector<Absender> testVect = db.getAlleAbsender();
+   for (Absender i : testVect)
+   {
+      std::cout << i.getName() << ", " << i.getAdresse() << ", " << i.getEmailadresse() << std::endl;
+   };
 
 //schließe Datenbank
    //Die Datenbank unbedingt schließen, sonst bleibt sie wohl möglich im Speicher!
-   //db.closeDatabase();
+   db.closeDatabase();
 }

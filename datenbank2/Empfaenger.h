@@ -6,7 +6,7 @@
 class Empfaenger : public Stelle
 {
 public:
-   Empfaenger(std::string Name, std::string Emailadresse, std::string Adresse = "");
+   Empfaenger(std::string Name, std::string Emailadresse, std::string Adresse);
    ~Empfaenger();
 
 };

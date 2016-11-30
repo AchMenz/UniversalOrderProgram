@@ -163,6 +163,46 @@ void DB::insertRecordWare(std::string name, std::string warengruppe)
    executeSqlInsert(db, sql, zErrMsg, rc, funktionsname);
 }
 
+void DB::insertRecordAbsender(std::string name , std::string adresse, std::string emailadresse)
+{
+   char *sql;
+   
+   //erstelle zunächst String-SQL-Anweisung
+   std::string sqlPrae;
+   //Pragma... Damit keine Fremdschlüssel eingetragen werden, die gar nicht existieren.
+   sqlPrae = "PRAGMA foreign_keys = on;\n" \
+             "INSERT INTO Absender (Name, Adresse, Emailadresse) " \
+             "VALUES ('" + name + "', '" + adresse + "', '" + emailadresse + "');";
+
+   //konvertiere sqlPrae in char*
+   sql = (char*) sqlPrae.c_str();
+
+   //erzeuge einen String mit dem Funktionsname, der executeSqlInsert übergeben wird
+   std::string funktionsname(__func__);
+   //führe Sql-Code aus
+   executeSqlInsert(db, sql, zErrMsg, rc, funktionsname);
+}
+
+void DB::insertRecordEmpfaenger(std::string name , std::string adresse, std::string emailadresse)
+{
+   char *sql;
+   
+   //erstelle zunächst String-SQL-Anweisung
+   std::string sqlPrae;
+   //Pragma... Damit keine Fremdschlüssel eingetragen werden, die gar nicht existieren.
+   sqlPrae = "PRAGMA foreign_keys = on;\n" \
+             "INSERT INTO Empfaenger (Name, Adresse, Emailadresse) " \
+             "VALUES ('" + name + "', '" + adresse + "', '" + emailadresse + "');";
+
+   //konvertiere sqlPrae in char*
+   sql = (char*) sqlPrae.c_str();
+
+   //erzeuge einen String mit dem Funktionsname, der executeSqlInsert übergeben wird
+   std::string funktionsname(__func__);
+   //führe Sql-Code aus
+   executeSqlInsert(db, sql, zErrMsg, rc, funktionsname);
+}
+
 std::vector<std::string> DB::getAlleWarengruppenFromDB()
 {
    char *sql;
@@ -199,6 +239,172 @@ std::vector<std::string> DB::getAlleWarengruppenFromDB()
       }
       //füge Strings "Name" zum Resultatvektor hinzu
       result.push_back(tempMap["Name"]);
+   }
+   return result;
+}
+
+std::vector<std::string> DB::getAlleEmpfaengerNamen()
+{
+   char *sql;
+   
+   //erstelle zunächst String-SQL-Anweisung
+   std::string sqlPrae;
+   //Pragma... Damit keine Fremdschlüssel eingetragen werden, die gar nicht existieren.
+   sqlPrae = "PRAGMA foreign_keys = on;\n" \
+             "SELECT Name FROM Empfaenger ORDER BY Name";
+
+   //konvertiere sqlPrae in char*
+   sql = (char*) sqlPrae.c_str();
+   
+   //erzeuge einen String mit dem Funktionsname, der executeSqlSelect übergeben wird
+   std::string funktionsname(__func__);
+   
+   //führe Sql-Code aus
+   //Die globale Variable "queryResult" wird dadurch mit einer Map belegt.
+   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname);
+   
+   //hohle das query-result aus der globalen Variable queryResult
+   //der Resultatvektor
+   std::vector<std::string> result;
+   //eine Zwischenspeichermap
+   std::map<std::string, std::string> tempMap;
+   //durchlaufe queryResult
+   for (auto const& dataset : queryResult)
+   {
+      //durchlaufe die Maps in queryResult
+      for (auto const& valuesOfDataset : dataset.second)
+      {
+         //fülle die Zwischenspeichermap
+         tempMap[valuesOfDataset.first] = valuesOfDataset.second;
+      }
+      //füge Strings "Name" zum Resultatvektor hinzu
+      result.push_back(tempMap["Name"]);
+   }
+   return result;
+}
+
+std::vector<std::string> DB::getAlleAbsenderNamen()
+{
+   char *sql;
+   
+   //erstelle zunächst String-SQL-Anweisung
+   std::string sqlPrae;
+   //Pragma... Damit keine Fremdschlüssel eingetragen werden, die gar nicht existieren.
+   sqlPrae = "PRAGMA foreign_keys = on;\n" \
+             "SELECT Name FROM Absender ORDER BY Name";
+
+   //konvertiere sqlPrae in char*
+   sql = (char*) sqlPrae.c_str();
+   
+   //erzeuge einen String mit dem Funktionsname, der executeSqlSelect übergeben wird
+   std::string funktionsname(__func__);
+   
+   //führe Sql-Code aus
+   //Die globale Variable "queryResult" wird dadurch mit einer Map belegt.
+   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname);
+   
+   //hohle das query-result aus der globalen Variable queryResult
+   //der Resultatvektor
+   std::vector<std::string> result;
+   //eine Zwischenspeichermap
+   std::map<std::string, std::string> tempMap;
+   //durchlaufe queryResult
+   for (auto const& dataset : queryResult)
+   {
+      //durchlaufe die Maps in queryResult
+      for (auto const& valuesOfDataset : dataset.second)
+      {
+         //fülle die Zwischenspeichermap
+         tempMap[valuesOfDataset.first] = valuesOfDataset.second;
+      }
+      //füge Strings "Name" zum Resultatvektor hinzu
+      result.push_back(tempMap["Name"]);
+   }
+   return result;
+}
+
+std::vector<Empfaenger> DB::getAlleEmpfaenger()
+{
+   char *sql;
+   
+   //erstelle zunächst String-SQL-Anweisung
+   std::string sqlPrae;
+   //Pragma... Damit keine Fremdschlüssel eingetragen werden, die gar nicht existieren.
+   sqlPrae = "PRAGMA foreign_keys = on;\n" \
+             "SELECT * FROM Empfaenger ORDER BY Name;";
+
+   //konvertiere sqlPrae in char*
+   sql = (char*) sqlPrae.c_str();
+   
+   //erzeuge einen String mit dem Funktionsname, der executeSqlSelect übergeben wird
+   std::string funktionsname(__func__);
+   
+   //führe Sql-Code aus
+   //Die globale Variable "queryResult" wird dadurch mit einer Map belegt.
+   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname);
+   
+   //hohle das query-result aus der globalen Variable queryResult
+   //der Resultatvektor
+   std::vector<Empfaenger> result;
+   //eine Zwischenspeichermap
+   std::map<std::string, std::string> tempMap;
+   //durchlaufe queryResult
+   for (auto const& dataset : queryResult)
+   {
+      //durchlaufe die Maps in queryResult
+      for (auto const& valuesOfDataset : dataset.second)
+      {
+         //fülle die Zwischenspeichermap
+         tempMap[valuesOfDataset.first] = valuesOfDataset.second;
+      }
+      
+      //erzeuge Objekte vom Typ Empfaenger aus der Zwischenspeichermap
+      Empfaenger empfTemp(tempMap["Name"], tempMap["Emailadresse"], tempMap["Adresse"]);
+      //füge Objekte zum Resultatvektor hinzu
+      result.push_back(empfTemp);
+   }
+   return result;
+}
+
+std::vector<Absender> DB::getAlleAbsender()
+{
+   char *sql;
+   
+   //erstelle zunächst String-SQL-Anweisung
+   std::string sqlPrae;
+   //Pragma... Damit keine Fremdschlüssel eingetragen werden, die gar nicht existieren.
+   sqlPrae = "PRAGMA foreign_keys = on;\n" \
+             "SELECT * FROM Absender ORDER BY Name;";
+
+   //konvertiere sqlPrae in char*
+   sql = (char*) sqlPrae.c_str();
+   
+   //erzeuge einen String mit dem Funktionsname, der executeSqlSelect übergeben wird
+   std::string funktionsname(__func__);
+   
+   //führe Sql-Code aus
+   //Die globale Variable "queryResult" wird dadurch mit einer Map belegt.
+   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname);
+   
+   //hohle das query-result aus der globalen Variable queryResult
+   //der Resultatvektor
+   std::vector<Absender> result;
+   //eine Zwischenspeichermap
+   std::map<std::string, std::string> tempMap;
+   //durchlaufe queryResult
+   for (auto const& dataset : queryResult)
+   {
+      //durchlaufe die Maps in queryResult
+      for (auto const& valuesOfDataset : dataset.second)
+      {
+         //fülle die Zwischenspeichermap
+         tempMap[valuesOfDataset.first] = valuesOfDataset.second;
+      }
+      
+      //erzeuge Objekte vom Typ Absender aus der Zwischenspeichermap
+      Absender absTemp(tempMap["Name"], tempMap["Emailadresse"], tempMap["Adresse"]);
+      //füge Objekte zum Resultatvektor hinzu
+      result.push_back(absTemp);
    }
    return result;
 }

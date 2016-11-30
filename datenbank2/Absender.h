@@ -6,7 +6,7 @@
 class Absender : public Stelle
 {
 public:
-   Absender(std::string Name, std::string Emailadresse, std::string Adresse = "");
+   Absender(std::string Name, std::string Emailadresse, std::string Adresse);
    ~Absender();
 
 };
