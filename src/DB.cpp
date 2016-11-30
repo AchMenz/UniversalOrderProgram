@@ -33,7 +33,6 @@ int DB::callback(void *NotUsed, int argc, char **argv, char **azColName)
    for(i=0; i<argc; i++){
       printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
    }
-   printf("\n");
    return 0;
 }
 
@@ -48,7 +47,6 @@ int DB::callback_select(void *data, int argc, char **argv, char **azColName)
       //printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
       temp[azColName[i]] = (char*) (argv[i] ? argv[i] : "NULL");
    }
-   printf("\n");
    
    //füge das Tempmap zur Ergebnismap hinzu
    queryResult[countDatasets] = temp;
@@ -64,6 +62,7 @@ void DB::executeSqlInsert(sqlite3 *db, char* sql, char *zErrMsg, int rc, std::st
    rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
    if( rc != SQLITE_OK )
    {
+      fprintf(stderr, "SQL-Operation error in '%s'.\n", funktionsname.c_str());
       fprintf(stderr, "SQL error: %s\n", zErrMsg);
       sqlite3_free(zErrMsg);
    }
@@ -79,6 +78,7 @@ void DB::executeSqlSelect(sqlite3 *db, char *sql, char *zErrMsg, int rc, const v
    rc = sqlite3_exec(db, sql, callback_select, (void*)data, &zErrMsg);
    if( rc != SQLITE_OK )
    {
+      fprintf(stderr, "SQL-Operation error in '%s'.\n", funktionsname.c_str());
       fprintf(stderr, "SQL error: %s\n", zErrMsg);
       sqlite3_free(zErrMsg);
    }
@@ -89,6 +89,27 @@ void DB::executeSqlSelect(sqlite3 *db, char *sql, char *zErrMsg, int rc, const v
    
    //stelle die Schleifenvariable wieder auf 0
    countDatasets = 0;
+}
+
+void DB::createTables(std::string sqlFromFile)
+{
+   
+   char *sql;
+
+   /* Create SQL statement */
+   sql = (char*) sqlFromFile.c_str();
+   
+   /* Execute SQL statement */
+   rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
+   if( rc != SQLITE_OK )
+   {
+      fprintf(stderr, "SQL error: %s\n", zErrMsg);
+      sqlite3_free(zErrMsg);
+   }
+   else
+   {
+      fprintf(stderr, "Table created successfully\n");
+   }
 }
 
 void DB::closeDatabase()
@@ -278,6 +299,101 @@ void DB::updateKommentar(std::string ware, std::string warengruppe, std::string 
    sqlPrae = "PRAGMA foreign_keys = on;\n" \
              "UPDATE Ware SET Kommentar = '" + kommentar + "' \
              WHERE Name = '" + ware + "' AND Warengruppe = '" + warengruppe + "';";
+
+   //konvertiere sqlPrae in char*
+   sql = (char*) sqlPrae.c_str();
+   
+   //erzeuge einen String mit dem Funktionsname, der executeSqlSelect übergeben wird
+   std::string funktionsname(__func__);
+   
+   //führe Sql-Code aus
+   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname);
+}
+
+void DB::deleteWare(std::string ware, std::string warengruppe)
+{
+   char *sql;
+   
+   //erstelle zunächst String-SQL-Anweisung
+   std::string sqlPrae;
+   //Pragma... Damit keine Fremdschlüssel eingetragen werden, die gar nicht existieren.
+   sqlPrae = "PRAGMA foreign_keys = on;\n" \
+             "DELETE FROM Ware WHERE Name = '" + ware + "' \
+             AND Warengruppe = '" + warengruppe + "';";
+
+   //konvertiere sqlPrae in char*
+   sql = (char*) sqlPrae.c_str();
+   
+   //erzeuge einen String mit dem Funktionsname, der executeSqlSelect übergeben wird
+   std::string funktionsname(__func__);
+   
+   //führe Sql-Code aus
+   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname);
+}
+
+bool DB::warengruppeIsDeletable(std::string warengruppe)
+{
+   char *sql;
+   
+   //erstelle zunächst String-SQL-Anweisung
+   std::string sqlPrae;
+   //Pragma... Damit keine Fremdschlüssel eingetragen werden, die gar nicht existieren.
+   sqlPrae = "PRAGMA foreign_keys = on;\n" \
+             "SELECT ID FROM Ware WHERE Warengruppe = '" + warengruppe + "';";
+
+   //konvertiere sqlPrae in char*
+   sql = (char*) sqlPrae.c_str();
+   
+   //erzeuge einen String mit dem Funktionsname, der executeSqlSelect übergeben wird
+   std::string funktionsname(__func__);
+   
+   //führe Sql-Code aus
+   //Die globale Variable "queryResult" wird dadurch mit einer Map belegt.
+   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname);
+   
+   //hohle das query-result aus der globalen Variable queryResult
+   //der Resultatvektor
+   std::vector<std::string> result;
+   //eine Zwischenspeichermap
+   std::map<std::string, std::string> tempMap;
+   //durchlaufe queryResult
+   for (auto const& dataset : queryResult)
+   {
+      //durchlaufe die Maps in queryResult
+      for (auto const& valuesOfDataset : dataset.second)
+      {
+         //fülle die Zwischenspeichermap
+         tempMap[valuesOfDataset.first] = valuesOfDataset.second;
+      }
+      
+      //erzeuge Objekte vom Typ std::string aus der Zwischenspeichermap
+      std::string IDTemp(tempMap["ID"]);
+      //füge Objekte vom Typ std::string zum Resultatvektor hinzu
+      result.push_back(IDTemp);
+   }
+   if (result.size() == 0)
+   {
+      //Die Warengruppe kann gelöscht werden, weil keine
+      //Fremdschlüssel der Warengruppe mehr in der Tabelle "Ware" vorkommen.
+      return true;
+   }
+   else
+   {
+      //Die Warengruppe kann nicht gelöscht werden, weil sie noch als
+      //Fremdschlüssel in der Tabelle "Ware" auftaucht.
+      return false;
+   }
+}
+
+void DB::deleteWarengruppe(std::string warengruppe)
+{
+   char *sql;
+   
+   //erstelle zunächst String-SQL-Anweisung
+   std::string sqlPrae;
+   //Pragma... Damit keine Fremdschlüssel eingetragen werden, die gar nicht existieren.
+   sqlPrae = "PRAGMA foreign_keys = on;\n" \
+             "DELETE FROM Warengruppe WHERE Name = '" + warengruppe + "';";
 
    //konvertiere sqlPrae in char*
    sql = (char*) sqlPrae.c_str();

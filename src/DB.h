@@ -33,18 +33,23 @@ public:
    static void executeSqlSelect(sqlite3 *db, char *sql, char *zErrMsg, int rc, const void* data, std::string funktionsname);
 
 
+   //erstellt Tabellen nach Maßgabe einer Sql-Datei
+   void createTables(std::string sqlFromFile);
+
    //schließt die Datenbank
    void closeDatabase();
 
 
    //Inserts
-   //fügt einen Datensatz in Tabelle Warengruppe ein
+   //fügt einen Datensatz in Tabelle "Warengruppe" ein
    void insertRecordWarengruppe(std::string name, std::string kommentar = "");
    
-   //fügt einen Datensatz in Tabelle Ware ein
+   //fügt einen Datensatz in Tabelle "Ware" ein
    void insertRecordWare(std::string name, std::string warengruppe);
    
+   //fügt einen
    
+      
    //Selects
    //gibt einen Vector aus allen Datensätzen des Typs "Warengruppe" aus der Datenbank zurück
    std::vector<std::string> getAlleWarengruppenFromDB();
@@ -52,15 +57,23 @@ public:
    //gibt einen Vector aus allen Datensätzen des Typs "Ware" zurück
    std::vector<Ware> getAlleWarenFromDB();
    
-   //ändert einen Wert in Ware
+   //ändert einen Wert in einem Datensatz der Tabelle "Ware"
    void updatePreisProKg(std::string ware, std::string warengruppe, float preis = 0);
 
-   //ändert einen Wert in Ware
+   //ändert einen Wert in einem Datensatz der Tabelle "Ware"
    void updatePreisProSt(std::string ware, std::string warengruppe, float preis = 0);
 
-   //ändert einen Wert in Ware
+   //ändert einen Wert in einem Datensatz der Tabelle "Ware"
    void updateKommentar(std::string ware, std::string warengruppe, std::string kommentar);
+   
+   //löscht eine Ware aud der Tabelle "Ware"
+   void deleteWare(std::string ware, std::string warengruppe);
+   
+   //gibt true zurück, falls die Warengruppe in der Tabelle "Ware" nicht mehr als Fremdschlüssel vorkommt
+   bool warengruppeIsDeletable(std::string warengruppe);
 
+   //löscht eine Warengruppe aus der Tabelle "Warengruppe"
+   void deleteWarengruppe(std::string warengruppe);
 };
 
 #endif // DB_HPP

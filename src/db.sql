@@ -7,6 +7,8 @@ PRAGMA foreign_keys = off;
 BEGIN TRANSACTION;
 
 -- Table: Ware
+DROP TABLE IF EXISTS Ware;
+
 CREATE TABLE Ware (
     ID           INTEGER NOT NULL
                          PRIMARY KEY AUTOINCREMENT,
@@ -20,11 +22,36 @@ CREATE TABLE Ware (
 
 
 -- Table: Warengruppe
+DROP TABLE IF EXISTS Warengruppe;
+
 CREATE TABLE Warengruppe (
     Name      TEXT NOT NULL
                    PRIMARY KEY
                    UNIQUE,
     Kommentar TEXT
+);
+
+-- Table: Empfaenger
+DROP TABLE IF EXISTS Empfaenger;
+
+CREATE TABLE Empfaenger (
+    Name         TEXT NOT NULL
+                      PRIMARY KEY
+                      UNIQUE,
+    Adresse      TEXT,
+    Emailadresse TEXT    NOT NULL
+);
+
+
+-- Table: Absender
+DROP TABLE IF EXISTS Absender;
+
+CREATE TABLE Absender (
+    Name         TEXT NOT NULL
+                      PRIMARY KEY
+                      UNIQUE,
+    Adresse      TEXT,
+    Emailadresse TEXT    NOT NULL
 );
 
 
