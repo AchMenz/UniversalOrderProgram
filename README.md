@@ -22,4 +22,4 @@ LIBS += -lsqlite3
 QMAKE_CXXFLAGS += -std=c++11
 
 ## packages
-sudo apt-get install sqlite3 libsqlite3-dev
+sudo apt-get install sqlite3 libsqlite3-dev qt4-default
