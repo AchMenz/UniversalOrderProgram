@@ -5,7 +5,7 @@ Database: SQlite
 
 Language: C++
 
-Parameter zum Kompilieren:
+Parameter zum Kompilieren (mit CodeLite):
 
 Linker: "-l sqlite3
 
@@ -14,4 +14,12 @@ Compiler "-std=c++11"
 
 
 # You need 
-sudo apt-get install libsqlite3-dev
+## .pro-File
+In der .pro File von Qmake muss folgendes hinzugefügt werden (unter "# Input"):
+
+LIBS += -lsqlite3
+
+QMAKE_CXXFLAGS += -std=c++11
+
+## packages
+sudo apt-get install sqlite3 libsqlite3-dev
