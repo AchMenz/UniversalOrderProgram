@@ -45,24 +45,23 @@ public:
 
 //Inserts
    //fügt einen Datensatz in Tabelle "Warengruppe" ein
-   void insertRecordWarengruppe(std::string name, std::string kommentar = "");
+   void insertRecordInWarengruppe(std::string name, std::string kommentar = "");
    
    //fügt einen Datensatz in Tabelle "Ware" ein
-   void insertRecordWare(std::string name, std::string warengruppe);
+   void insertRecordInWare(std::string name, std::string warengruppe);
    
    //fügt einen Datensatz in Tabelle "Absender" ein
-   void insertRecordAbsender(std::string name , std::string email, std::string adresse);
+   void insertRecordInAbsenderEmpfaenger(std::string tabelle, std::string name , std::string email, std::string adresse);
 
-   //fügt einen Datensatz in Tabelle "Empfänger" ein
-   void insertRecordEmpfaenger(std::string name , std::string email, std::string adresse);   
-      
-      
+
+
+   
 //Selects
    //gibt einen Vector aus allen Namen aus der Tabelle "Warengruppe" zurück
-   std::vector<std::string> getAlleWarengruppenFromDB();
+   std::vector<std::string> getAlleWarengruppenNamen();
 
    //gibt einen Vector aus allen Datensätzen des Typs "Ware" zurück
-   std::vector<Ware> getAlleWarenFromDB();
+   std::vector<Ware> getAlleWaren();
    
    //gibt einen Vector aus allen Namen aus der Tabelle "Emfaenger" zurück
    std::vector<std::string> getAlleEmpfaengerNamen();
@@ -87,6 +86,9 @@ public:
    //ändert einen Wert in einem Datensatz der Tabelle "Ware"
    void updateKommentar(std::string ware, std::string warengruppe, std::string kommentar);
    
+   //ändert den Wert in "feld" = "wert" in den Tabellen Empfaenger und Absender wo "Name" = name
+   void updateWerteInAbsenderEmpfaenger(std::string tabelle, std::string name, std::string feld, std::string wert);
+   
 
 //Deletes
    //löscht eine Ware aud der Tabelle "Ware"
@@ -97,6 +99,9 @@ public:
 
    //löscht eine Warengruppe aus der Tabelle "Warengruppe"
    void deleteWarengruppe(std::string warengruppe);
+   
+   //löscht einen Datensatz in der Tabelle "Empfaenger" oder "Absender" wo "Name" = name
+   void deleteRecordInAbsenderEmpfaenger(std::string tabelle, std::string name);
 };
 
 #endif // DB_HPP

@@ -21,17 +21,16 @@ int main(int argc, char **argv)
 
 
 //Erzeuge Daten
-//   db.insertRecordWarengruppe("Reh", "Hat ein kleines Gehörn.");
-//   db.insertRecordWarengruppe("Hirsch", "Hat ein großes Geweih.");
+//   db.insertRecordInWarengruppe("Reh", "Hat ein kleines Gehörn.");
+//   db.insertRecordInWarengruppe("Hirsch", "Hat ein großes Geweih.");
 // 
-//   db.insertRecordWare("Filet", "Reh");
-//   db.insertRecordWare("Haxen", "Hirsch");
-//   db.insertRecordWare("Blatt", "Reh");
-//   db.insertRecordWare("Lende", "Hirsch");
-//   db.insertRecordWare("Wurstfleisch", "Reh");
+//   db.insertRecordInWare("Filet", "Reh");
+//   db.insertRecordInWare("Haxen", "Hirsch");
+//   db.insertRecordInWare("Blatt", "Reh");
+//   db.insertRecordInWare("Lende", "Hirsch");
+//   db.insertRecordInWare("Wurstfleisch", "Reh");
 //
-//   db.insertRecordAbsender("Wildhandel Broy", "Wildhandel Broy\nStraße des Aufbaus 5\n04808 Wurzen", "wildhandelbroy@aol.com");
-//   db.insertRecordEmpfaenger("Wursthandel Jankowski", "Wursthandel Jankowski\nStraße der Revolution 10\n02373 Warschau", "jankowski@web.de");
+//   db.insertRecordInAbsenderEmpfaenger("Empfaenger", "Las Kalisz", "Las Kalisz\nStraße des Wildes 123\n04353 Tomnice", "laskalisz@web.pl");
 
 
 
@@ -41,7 +40,9 @@ int main(int argc, char **argv)
    //db.updateKommentar("Lende", "Hirsch", "Bitte eingefroren.");
    //db.updatePreisProKg("Haxen", "Hirsch", 4.5);
    //db.updatePreisProSt("Lende", "Hirsch", 35.45);
-
+   
+   //ändert einen Wert in der Tabelle "Absender" oder "Empfänger"
+   //db.updateWerteInAbsenderEmpfaenger("Empfaenger", "Wursthandel Jankowski", "Emailadresse", "jankowskiInPolen@mail.pl");
 
 
 
@@ -57,7 +58,8 @@ int main(int argc, char **argv)
    //lösche eine Warengruppe
    //db.deleteWarengruppe("Reh");
 
-
+   //lösche einen Datensatz in der Tabelle "Empfaenger" oder "Absender"
+   //db.deleteRecordInAbsenderEmpfaenger("Empfaenger", "Wildhandel Broy 2");
 
 
 
@@ -65,14 +67,14 @@ int main(int argc, char **argv)
 
 //Hohle Daten
    //Hohle einen Vector mit Strings von "Warengruppen" aus der DB.
-//   std::vector<std::string> testVect = db.getAlleWarengruppenFromDB();
+//   std::vector<std::string> testVect = db.getAlleWarengruppenNamen();
 //   for (std::string i : testVect)
 //   {
 //      std::cout << i << std::endl;
 //   }
 
    //Hohle einen Vector mit "Waren" aus der DB.
-//   std::vector<Ware> testVectWare = db.getAlleWarenFromDB();
+//   std::vector<Ware> testVectWare = db.getAlleWaren();
 //   for (Ware i : testVectWare)
 //   {
 //      std::cout << i.getWarenName() << ", " << i.getWarenGruppeName() << ", " << i.getPreisProGewicht() \
@@ -87,11 +89,11 @@ int main(int argc, char **argv)
 //   }
 
    //Hohle einen Vector mit "Stellen" aus der DB
-   std::vector<Absender> testVect = db.getAlleAbsender();
-   for (Absender i : testVect)
-   {
-      std::cout << i.getName() << ", " << i.getAdresse() << ", " << i.getEmailadresse() << std::endl;
-   };
+//   std::vector<Absender> testVect = db.getAlleAbsender();
+//   for (Absender i : testVect)
+//   {
+//      std::cout << i.getName() << ", " << i.getAdresse() << ", " << i.getEmailadresse() << std::endl;
+//   };
 
 //schließe Datenbank
    //Die Datenbank unbedingt schließen, sonst bleibt sie wohl möglich im Speicher!

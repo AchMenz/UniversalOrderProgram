@@ -118,7 +118,7 @@ void DB::closeDatabase()
    fprintf(stdout, "Database succesfully closed.\n");
 }
 
-void DB::insertRecordWarengruppe(std::string name, std::string kommentar)
+void DB::insertRecordInWarengruppe(std::string name, std::string kommentar)
 {
    char *sql;
    
@@ -143,7 +143,7 @@ void DB::insertRecordWarengruppe(std::string name, std::string kommentar)
    executeSqlInsert(db, sql, zErrMsg, rc, funktionsname);
 }
 
-void DB::insertRecordWare(std::string name, std::string warengruppe)
+void DB::insertRecordInWare(std::string name, std::string warengruppe)
 {
    char *sql;
    
@@ -163,7 +163,7 @@ void DB::insertRecordWare(std::string name, std::string warengruppe)
    executeSqlInsert(db, sql, zErrMsg, rc, funktionsname);
 }
 
-void DB::insertRecordAbsender(std::string name , std::string adresse, std::string emailadresse)
+void DB::insertRecordInAbsenderEmpfaenger(std::string tabelle, std::string name , std::string adresse, std::string emailadresse)
 {
    char *sql;
    
@@ -171,7 +171,7 @@ void DB::insertRecordAbsender(std::string name , std::string adresse, std::strin
    std::string sqlPrae;
    //Pragma... Damit keine Fremdschlüssel eingetragen werden, die gar nicht existieren.
    sqlPrae = "PRAGMA foreign_keys = on;\n" \
-             "INSERT INTO Absender (Name, Adresse, Emailadresse) " \
+             "INSERT INTO " + tabelle + " (Name, Adresse, Emailadresse) " \
              "VALUES ('" + name + "', '" + adresse + "', '" + emailadresse + "');";
 
    //konvertiere sqlPrae in char*
@@ -183,27 +183,7 @@ void DB::insertRecordAbsender(std::string name , std::string adresse, std::strin
    executeSqlInsert(db, sql, zErrMsg, rc, funktionsname);
 }
 
-void DB::insertRecordEmpfaenger(std::string name , std::string adresse, std::string emailadresse)
-{
-   char *sql;
-   
-   //erstelle zunächst String-SQL-Anweisung
-   std::string sqlPrae;
-   //Pragma... Damit keine Fremdschlüssel eingetragen werden, die gar nicht existieren.
-   sqlPrae = "PRAGMA foreign_keys = on;\n" \
-             "INSERT INTO Empfaenger (Name, Adresse, Emailadresse) " \
-             "VALUES ('" + name + "', '" + adresse + "', '" + emailadresse + "');";
-
-   //konvertiere sqlPrae in char*
-   sql = (char*) sqlPrae.c_str();
-
-   //erzeuge einen String mit dem Funktionsname, der executeSqlInsert übergeben wird
-   std::string funktionsname(__func__);
-   //führe Sql-Code aus
-   executeSqlInsert(db, sql, zErrMsg, rc, funktionsname);
-}
-
-std::vector<std::string> DB::getAlleWarengruppenFromDB()
+std::vector<std::string> DB::getAlleWarengruppenNamen()
 {
    char *sql;
    
@@ -409,7 +389,7 @@ std::vector<Absender> DB::getAlleAbsender()
    return result;
 }
 
-std::vector<Ware> DB::getAlleWarenFromDB()
+std::vector<Ware> DB::getAlleWaren()
 {
    char *sql;
    
@@ -516,6 +496,27 @@ void DB::updateKommentar(std::string ware, std::string warengruppe, std::string 
    executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname);
 }
 
+void DB::updateWerteInAbsenderEmpfaenger(std::string tabelle, std::string name, std::string feld, std::string wert)
+{
+   char *sql;
+   
+   //erstelle zunächst String-SQL-Anweisung
+   std::string sqlPrae;
+   //Pragma... Damit keine Fremdschlüssel eingetragen werden, die gar nicht existieren.
+   sqlPrae = "PRAGMA foreign_keys = on;\n" \
+             "UPDATE " + tabelle + " SET " + feld + " = '" + wert + "' \
+             WHERE Name = '" + name + "';";
+
+   //konvertiere sqlPrae in char*
+   sql = (char*) sqlPrae.c_str();
+   
+   //erzeuge einen String mit dem Funktionsname, der executeSqlSelect übergeben wird
+   std::string funktionsname(__func__);
+   
+   //führe Sql-Code aus
+   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname);
+}
+
 void DB::deleteWare(std::string ware, std::string warengruppe)
 {
    char *sql;
@@ -600,6 +601,26 @@ void DB::deleteWarengruppe(std::string warengruppe)
    //Pragma... Damit keine Fremdschlüssel eingetragen werden, die gar nicht existieren.
    sqlPrae = "PRAGMA foreign_keys = on;\n" \
              "DELETE FROM Warengruppe WHERE Name = '" + warengruppe + "';";
+
+   //konvertiere sqlPrae in char*
+   sql = (char*) sqlPrae.c_str();
+   
+   //erzeuge einen String mit dem Funktionsname, der executeSqlSelect übergeben wird
+   std::string funktionsname(__func__);
+   
+   //führe Sql-Code aus
+   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname);
+}
+
+void DB::deleteRecordInAbsenderEmpfaenger(std::string tabelle, std::string name)
+{
+   char *sql;
+   
+   //erstelle zunächst String-SQL-Anweisung
+   std::string sqlPrae;
+   //Pragma... Damit keine Fremdschlüssel eingetragen werden, die gar nicht existieren.
+   sqlPrae = "PRAGMA foreign_keys = on;\n" \
+             "DELETE FROM " + tabelle + " WHERE Name = '" + name + "';";
 
    //konvertiere sqlPrae in char*
    sql = (char*) sqlPrae.c_str();
