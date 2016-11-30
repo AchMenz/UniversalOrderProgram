@@ -1,7 +1,7 @@
 //--- Oberflache.cpp - start ---
 #include "Oberflache.h"
 #include "Ware.h"
-#include "db.h"
+#include "DB.h"
 #include <iostream>
 #include <QString>
 #include <vector>

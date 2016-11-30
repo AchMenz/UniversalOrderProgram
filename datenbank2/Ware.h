@@ -26,7 +26,6 @@ class Ware{
 	
 	string warenName;
 	string warenGruppeName;
-	string info;
 	float preisProGewicht;
 	float preisProStueck;
 	float mengeInGewicht;
