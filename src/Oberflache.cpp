@@ -39,7 +39,7 @@ Oberflache::Oberflache(QMainWindow *parent) : QMainWindow(parent){
 	 // db.insertRecordInWare("Lende", "Hirsch");
 	 // db.insertRecordInWare("Wurstfleisch", "Wildschwein");
 
-	std::cout << db.getAlleEmpfaenger()[0].getName() << std::endl;
+	//std::cout << db.getAlleEmpfaenger()[0].getName() << std::endl;
 	
 	//Ware Schinken = Ware("Schinken","Fleisch",3.3,3.4,3.5,3.6,"kommentar Schinken");//debugging
 	//Ware Banane = Ware("Banane","Obst",2.5,2.6,2.7,2.8,"kommentar Banane");//debugging
@@ -56,8 +56,17 @@ Oberflache::Oberflache(QMainWindow *parent) : QMainWindow(parent){
 	//select die einen Vector<Warengruppe> zurück gibt
 	//warenGruppeVector = db.getAlleWarengruppenNamen();
 	
+	NameAbsenderEdit->insert(QString::fromStdString(db.getAlleAbsender()[0].getName()));
+		QTextDocument* ED;
+		ED -> setPlainText(QString::fromStdString(db.getAlleAbsender()[0].getAdresse()));
+	AdresseAbsenderEdit->setDocument(ED);
+	EmailAbsenderEdit->insert(QString::fromStdString(db.getAlleAbsender()[0].getEmailadresse()));
 	
-	
+	NameEmpfaengerEdit->insert(QString::fromStdString(db.getAlleEmpfaenger()[0].getName()));
+		QTextDocument* AD;
+		AD -> setPlainText(QString::fromStdString(db.getAlleEmpfaenger()[0].getAdresse()));
+	AdresseEmpfaengerEdit->setDocument(AD);
+	EmailEmpfaengerEdit->insert(QString::fromStdString(db.getAlleEmpfaenger()[0].getEmailadresse()));
 //Daten werden auf Oberfläche geladen	
 	for(unsigned i3 = 0;i3<warenVector.size();++i3){		
 		warenNameVector.push_back(warenVector[i3].getWarenGruppeName() + " " + warenVector[i3].getWarenName());
@@ -78,6 +87,7 @@ Oberflache::Oberflache(QMainWindow *parent) : QMainWindow(parent){
 	connect(WarEntfernenPB, SIGNAL(clicked()), this, SLOT(entferneWare()));
 	connect(WarenTW, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(zelleaktualisiert(QTableWidgetItem*)));
 	connect(WarenGruppeEntfPB, SIGNAL(clicked()), this, SLOT(entferneWarenGruppe()));
+	connect(EinstellungenPButton, SIGNAL(clicked()), this, SLOT(aktualisiereEinstellungen()));
 	
 }
 
@@ -196,12 +206,12 @@ void Oberflache::generiereWare(){
 		
 		
 		std::vector<std::string> testVect = db.getAlleWarengruppenNamen();
-	for (std::string i : testVect)
-		{
-		std::cout << i << std::endl;
-		}
-		std::cout << " " << std::endl;
-		std::cout << "test" << std::endl;
+	//for (std::string i : testVect)
+		// {
+		// std::cout << i << std::endl;
+		// }
+		// std::cout << " " << std::endl;
+		// std::cout << "test" << std::endl;
 		
 			WareEntfCB -> clear();
 			WarenGruppeCB -> clear();
@@ -360,6 +370,10 @@ void Oberflache::generiereWare(){
 			msgBox.setText("Warengruppe konnte nicht entfernt werden, weil noch eine Ware mit dieser Warengruppe existiert.");
 			msgBox.exec();
 		}
+	}
+	
+	void Oberflache::aktualisiereEinstellungen(){
+		std::cout << "test"<< std::endl;
 	}
 	
 	//ALT
