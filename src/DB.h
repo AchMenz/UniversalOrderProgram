@@ -101,6 +101,9 @@ public:
    //ändert den Wert in "feld" = "wert" in den Tabellen Empfaenger und Absender wo "Name" = name
    void updateWerteInAbsenderEmpfaenger(std::string tabelle, std::string name, std::string feld, std::string wert);
    
+   //fügt in jedem "Menge"-Feld in der DB eine 0 ein
+   void clearAllMengeFelder();
+
 
 //Deletes
    //löscht eine Ware aud der Tabelle "Ware"

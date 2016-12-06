@@ -69,7 +69,7 @@ void DB::executeSqlInsert(sqlite3 *db, char* sql, char *zErrMsg, int rc, std::st
    else
    {
       fprintf(stderr, "SQL-Operation '%s' executed successfully\n", funktionsname.c_str());
-	  fprintf(stderr, "SQL-Insert: %s", sql);
+	   //fprintf(stderr, "SQL-Insert: %s", sql);
    }
 }
 
@@ -86,7 +86,7 @@ void DB::executeSqlSelect(sqlite3 *db, char *sql, char *zErrMsg, int rc, const v
    else
    {
       fprintf(stderr,"SQL-Operation '%s' executed successfully\n", funktionsname.c_str());
-	  fprintf(stderr, "SQL-Insert: %s", sql);
+	   //fprintf(stderr, "SQL-Insert: %s", sql);
   }
    
    //stelle die Schleifenvariable wieder auf 0
@@ -644,6 +644,27 @@ void DB::updateWerteInAbsenderEmpfaenger(std::string tabelle, std::string name, 
    sqlPrae = "PRAGMA foreign_keys = on;\n" \
              "UPDATE " + tabelle + " SET " + feld + " = '" + wert + "' \
              WHERE Name = '" + name + "';";
+
+   //konvertiere sqlPrae in char*
+   sql = (char*) sqlPrae.c_str();
+   
+   //erzeuge einen String mit dem Funktionsname, der executeSqlSelect übergeben wird
+   std::string funktionsname(__func__);
+   
+   //führe Sql-Code aus
+   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname);
+}
+
+void DB::clearAllMengeFelder()
+{
+   char *sql;
+   
+   //erstelle zunächst String-SQL-Anweisung
+   std::string sqlPrae;
+   //Pragma... Damit keine Fremdschlüssel eingetragen werden, die gar nicht existieren.
+   sqlPrae = "PRAGMA foreign_keys = on;\n" \
+             "UPDATE Ware SET Menge_in_St = 0;" \
+             "UPDATE Ware SET Menge_in_Kg = 0;";
 
    //konvertiere sqlPrae in char*
    sql = (char*) sqlPrae.c_str();

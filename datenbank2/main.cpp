@@ -78,7 +78,7 @@ int main(int argc, char **argv)
 //   for (Ware i : testVectWare)
 //   {
 //      std::cout << i.getWarenName() << ", " << i.getWarenGruppeName() << ", " << i.getPreisProGewicht() \
-//      << ", " << i.getPreisProStueck() << ", " << i.getKommentar() << std::endl;
+//      << ", " << i.getPreisProStueck() << ", " << i.getKommentar() << ", " << i.getMengeInStueck() << ", " << i.getMengeInGewicht() << std::endl;
 //   }
 
    //Hohle einen Vector mit Strings von "Empfaenger" aus der DB
@@ -96,8 +96,11 @@ int main(int argc, char **argv)
 //   };
 
    //Hohle den ersten Empfaenger aus der DB
-   Empfaenger temp = db.getErstenEmpfaenger();
-   std::cout << temp.getName() << ", " << temp.getAdresse() << ", " << temp.getEmailadresse() << std::endl;
+//   Empfaenger temp = db.getErstenEmpfaenger();
+//   std::cout << temp.getName() << ", " << temp.getAdresse() << ", " << temp.getEmailadresse() << std::endl;
+
+   //setzt alle "Menge"-Felder in der Tabelle "Ware" auf 0
+//   db.clearAllMengeFelder();
 
 //schließe Datenbank
    //Die Datenbank unbedingt schließen, sonst bleibt sie wohl möglich im Speicher!
