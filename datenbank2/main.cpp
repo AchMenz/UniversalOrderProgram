@@ -44,6 +44,11 @@ int main(int argc, char **argv)
    //ändert einen Wert in der Tabelle "Absender" oder "Empfänger"
    //db.updateWerteInAbsenderEmpfaenger("Empfaenger", "Wursthandel Jankowski", "Emailadresse", "jankowskiInPolen@mail.pl");
 
+   //setzt alle "Menge"-Felder in der Tabelle "Ware" auf 0
+//   db.clearAllMengeFelder();
+
+   //ändere Daten in "Ware" -> Menge
+   //db.updateMengeInSt("Ware2", "Reh", 955.11);
 
 
 
@@ -74,12 +79,12 @@ int main(int argc, char **argv)
 //   }
 
    //Hohle einen Vector mit "Waren" aus der DB.
-//   std::vector<Ware> testVectWare = db.getAlleWaren();
-//   for (Ware i : testVectWare)
-//   {
-//      std::cout << i.getWarenName() << ", " << i.getWarenGruppeName() << ", " << i.getPreisProGewicht() \
-//      << ", " << i.getPreisProStueck() << ", " << i.getKommentar() << ", " << i.getMengeInStueck() << ", " << i.getMengeInGewicht() << std::endl;
-//   }
+   std::vector<Ware> testVectWare = db.getAlleWaren();
+   for (Ware i : testVectWare)
+   {
+      std::cout << i.getWarenName() << ", " << i.getWarenGruppeName() << ", " << i.getPreisProGewicht() \
+      << ", " << i.getPreisProStueck() << ", " << i.getKommentar() << ", " << i.getMengeInStueck() << ", " << i.getMengeInGewicht() << std::endl;
+   }
 
    //Hohle einen Vector mit Strings von "Empfaenger" aus der DB
 //   std::vector<std::string> testVect = db.getAlleEmpfaengerNamen();
@@ -99,8 +104,7 @@ int main(int argc, char **argv)
 //   Empfaenger temp = db.getErstenEmpfaenger();
 //   std::cout << temp.getName() << ", " << temp.getAdresse() << ", " << temp.getEmailadresse() << std::endl;
 
-   //setzt alle "Menge"-Felder in der Tabelle "Ware" auf 0
-//   db.clearAllMengeFelder();
+
 
 //schließe Datenbank
    //Die Datenbank unbedingt schließen, sonst bleibt sie wohl möglich im Speicher!
