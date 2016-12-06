@@ -53,8 +53,7 @@ Oberflache::Oberflache(QMainWindow *parent) : QMainWindow(parent){
 	
 	warenVector = db.getAlleWaren();
 	
-	//select die einen Vector<Warengruppe> zurück gibt
-	//warenGruppeVector = db.getAlleWarengruppenNamen();
+	
 	
 	NameAbsenderEdit->insert(QString::fromStdString(db.getAlleAbsender()[0].getName()));
 		QTextDocument* ED;
@@ -67,6 +66,9 @@ Oberflache::Oberflache(QMainWindow *parent) : QMainWindow(parent){
 		AD -> setPlainText(QString::fromStdString(db.getAlleEmpfaenger()[0].getAdresse()));
 	AdresseEmpfaengerEdit->setDocument(AD);
 	EmailEmpfaengerEdit->insert(QString::fromStdString(db.getAlleEmpfaenger()[0].getEmailadresse()));
+	
+	
+	
 //Daten werden auf Oberfläche geladen	
 	for(unsigned i3 = 0;i3<warenVector.size();++i3){		
 		warenNameVector.push_back(warenVector[i3].getWarenGruppeName() + " " + warenVector[i3].getWarenName());
