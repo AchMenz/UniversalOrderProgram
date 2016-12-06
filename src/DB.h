@@ -9,6 +9,7 @@
 #include "Ware.h"
 #include "Empfaenger.h"
 #include "Absender.h"
+#include "InfoBestellung.h"
 
 class DB
 {
@@ -81,6 +82,8 @@ public:
    //gibt einen Vector aus allen Datensätzen des Typs "Absender" zurück
    std::vector<Absender> getAlleAbsender();
    
+   //gibt ein Objekt vom Typ "InfoBestellung" aus
+   InfoBestellung getErsteInfoBestellung();
    
 //Updates   
    //ändert einen Wert in einem Datensatz der Tabelle "Ware"

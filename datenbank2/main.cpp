@@ -79,12 +79,12 @@ int main(int argc, char **argv)
 //   }
 
    //Hohle einen Vector mit "Waren" aus der DB.
-   std::vector<Ware> testVectWare = db.getAlleWaren();
-   for (Ware i : testVectWare)
-   {
-      std::cout << i.getWarenName() << ", " << i.getWarenGruppeName() << ", " << i.getPreisProGewicht() \
-      << ", " << i.getPreisProStueck() << ", " << i.getKommentar() << ", " << i.getMengeInStueck() << ", " << i.getMengeInGewicht() << std::endl;
-   }
+//   std::vector<Ware> testVectWare = db.getAlleWaren();
+//   for (Ware i : testVectWare)
+//   {
+//      std::cout << i.getWarenName() << ", " << i.getWarenGruppeName() << ", " << i.getPreisProGewicht() \
+//      << ", " << i.getPreisProStueck() << ", " << i.getKommentar() << ", " << i.getMengeInStueck() << ", " << i.getMengeInGewicht() << std::endl;
+//   }
 
    //Hohle einen Vector mit Strings von "Empfaenger" aus der DB
 //   std::vector<std::string> testVect = db.getAlleEmpfaengerNamen();
@@ -94,28 +94,22 @@ int main(int argc, char **argv)
 //   }
 
    //Hohle einen Vector mit "Stellen" aus der DB
-   std::vector<Absender> testVect = db.getAlleAbsender();
-   for (Absender i : testVect)
-   {
-      std::cout << i.getName() << ", " << i.getAdresse() << ", " << i.getEmailadresse() << std::endl;
-   };
-
-   std::vector<Absender> testVect1 = db.getAlleAbsender();
-   for (Absender i : testVect1)
-   {
-      std::cout << i.getName() << ", " << i.getAdresse() << ", " << i.getEmailadresse() << std::endl;
-   };
-
-   std::vector<Absender> testVect2 = db.getAlleAbsender();
-   for (Absender i : testVect2)
-   {
-      std::cout << i.getName() << ", " << i.getAdresse() << ", " << i.getEmailadresse() << std::endl;
-   };
+//   std::vector<Absender> testVect = db.getAlleAbsender();
+//   for (Absender i : testVect)
+//   {
+//      std::cout << i.getName() << ", " << i.getAdresse() << ", " << i.getEmailadresse() << std::endl;
+//   };
 
    //Hohle den ersten Empfaenger aus der DB
-//   Empfaenger temp = db.getErstenEmpfaenger();
-//   std::cout << temp.getName() << ", " << temp.getAdresse() << ", " << temp.getEmailadresse() << std::endl;
+   Empfaenger temp2 = db.getErstenEmpfaenger();
+   std::cout << temp2.getName() << ", " << temp2.getAdresse() << ", " << temp2.getEmailadresse() << std::endl;
 
+   Absender temp = db.getErstenAbsender();
+   std::cout << temp.getName() << ", " << temp.getAdresse() << ", " << temp.getEmailadresse() << std::endl;
+
+   //Hohle die erste Info aus InfoBestellung
+   InfoBestellung temp1 = db.getErsteInfoBestellung();
+   std::cout << temp1.getZieldatum() << ", " << temp1.getZielzeit() << ", " << temp1.getKommentar() << std::endl;
 
 
 //schließe Datenbank

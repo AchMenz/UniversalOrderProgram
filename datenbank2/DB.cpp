@@ -421,6 +421,7 @@ Absender DB::getErstenAbsender()
    std::vector<Absender> result;
    //eine Zwischenspeichermap
    std::map<std::string, std::string> tempMap;
+   
    //durchlaufe queryResult
    for (auto const& dataset : queryResult)
    {
@@ -527,6 +528,51 @@ std::vector<Ware> DB::getAlleWaren()
    }
    queryResult.clear();
    return result;
+}
+
+InfoBestellung DB::getErsteInfoBestellung()
+{
+   char *sql;
+   
+   //erstelle zunächst String-SQL-Anweisung
+   std::string sqlPrae;
+   //Pragma... Damit keine Fremdschlüssel eingetragen werden, die gar nicht existieren.
+   sqlPrae = "PRAGMA foreign_keys = on;\n" \
+             "SELECT * FROM InfoBestellung;";
+
+   //konvertiere sqlPrae in char*
+   sql = (char*) sqlPrae.c_str();
+   
+   //erzeuge einen String mit dem Funktionsname, der executeSqlSelect übergeben wird
+   std::string funktionsname(__func__);
+   
+   //führe Sql-Code aus
+   //Die globale Variable "queryResult" wird dadurch mit einer Map belegt.
+   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname);
+
+   //hohle das query-result aus der globalen Variable queryResult
+   //der Resultatvektor
+   std::vector<InfoBestellung> result;
+   //eine Zwischenspeichermap
+   std::map<std::string, std::string> tempMap;
+
+   //durchlaufe queryResult
+   for (auto const& dataset : queryResult)
+   {
+      //durchlaufe die Maps in queryResult
+      for (auto const& valuesOfDataset : dataset.second)
+      {
+         //fülle die Zwischenspeichermap
+         tempMap[valuesOfDataset.first] = valuesOfDataset.second;
+      }
+
+      //erzeuge Objekte vom Typ Infobestellung aus der Zwischenspeichermap
+      InfoBestellung Temp(tempMap["Zieldatum"], tempMap["Zielzeit"], tempMap["Kommentar"]);
+      //füge Objekte zum Resultatvektor hinzu
+      result.push_back(Temp);
+   }
+   queryResult.clear();   
+   return result[0];
 }
 
 void DB::updatePreisProKg(std::string ware, std::string warengruppe, float preis)
