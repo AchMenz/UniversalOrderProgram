@@ -17,7 +17,9 @@ CREATE TABLE Ware (
     Preis_pro_St DECIMAL,
     Kommentar    TEXT,
     Warengruppe  TEXT    REFERENCES Warengruppe (Name) 
-                         NOT NULL
+                         NOT NULL,
+    Menge_in_kg  DECIMAL,
+    Menge_in_St  DECIMAL
 );
 
 
@@ -54,6 +56,8 @@ CREATE TABLE Absender (
     Emailadresse TEXT    NOT NULL
 );
 
+INSERT INTO Empfaenger (Name, Emailadresse, Adresse) VALUES ("unbekannt", "unbekannt", "unbekannt");
+INSERT INTO Absender (Name, Emailadresse, Adresse) VALUES ("unbekannt", "unbekannt", "unbekannt");
 
 COMMIT TRANSACTION;
 PRAGMA foreign_keys = on;

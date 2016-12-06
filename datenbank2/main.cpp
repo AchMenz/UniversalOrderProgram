@@ -95,6 +95,10 @@ int main(int argc, char **argv)
 //      std::cout << i.getName() << ", " << i.getAdresse() << ", " << i.getEmailadresse() << std::endl;
 //   };
 
+   //Hohle den ersten Empfaenger aus der DB
+   Empfaenger temp = db.getErstenEmpfaenger();
+   std::cout << temp.getName() << ", " << temp.getAdresse() << ", " << temp.getEmailadresse() << std::endl;
+
 //schließe Datenbank
    //Die Datenbank unbedingt schließen, sonst bleibt sie wohl möglich im Speicher!
    db.closeDatabase();

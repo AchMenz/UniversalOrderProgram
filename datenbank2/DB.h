@@ -66,9 +66,15 @@ public:
    //gibt einen Vector aus allen Namen aus der Tabelle "Emfaenger" zurück
    std::vector<std::string> getAlleEmpfaengerNamen();
    
+   //gibt ein Objekt vom Typ "Empfaenger" zurück
+   Empfaenger getErstenEmpfaenger();
+   
    //gibt einen Vector aus allen Namen aus der Tabelle "Absender" zurück
    std::vector<std::string> getAlleAbsenderNamen();
    
+   //gibt ein Objekt vom Typ "Absender" zurück
+   Absender getErstenAbsender();
+
    //gibt einen Vector aus allen Datensätzen des Typs "Empfaenger" zurück
    std::vector<Empfaenger> getAlleEmpfaenger();
    
@@ -82,6 +88,12 @@ public:
 
    //ändert einen Wert in einem Datensatz der Tabelle "Ware"
    void updatePreisProSt(std::string ware, std::string warengruppe, float preis = 0);
+   
+   //ändert einen Wert in einem Datensatz der Tabelle "Ware"
+   void updateMengeInSt(std::string ware, std::string warengruppe, float mengeSt = 0);
+
+   //ändert einen Wert in einem Datensatz der Tabelle "Ware"
+   void updateMengeInKg(std::string ware, std::string warengruppe, float mengeKg = 0);
 
    //ändert einen Wert in einem Datensatz der Tabelle "Ware"
    void updateKommentar(std::string ware, std::string warengruppe, std::string kommentar);

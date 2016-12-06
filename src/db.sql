@@ -17,7 +17,9 @@ CREATE TABLE Ware (
     Preis_pro_St DECIMAL,
     Kommentar    TEXT,
     Warengruppe  TEXT    REFERENCES Warengruppe (Name) 
-                         NOT NULL
+                         NOT NULL,
+    Menge_in_kg  DECIMAL,
+    Menge_in_St  DECIMAL
 );
 
 
