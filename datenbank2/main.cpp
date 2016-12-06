@@ -94,11 +94,23 @@ int main(int argc, char **argv)
 //   }
 
    //Hohle einen Vector mit "Stellen" aus der DB
-//   std::vector<Absender> testVect = db.getAlleAbsender();
-//   for (Absender i : testVect)
-//   {
-//      std::cout << i.getName() << ", " << i.getAdresse() << ", " << i.getEmailadresse() << std::endl;
-//   };
+   std::vector<Absender> testVect = db.getAlleAbsender();
+   for (Absender i : testVect)
+   {
+      std::cout << i.getName() << ", " << i.getAdresse() << ", " << i.getEmailadresse() << std::endl;
+   };
+
+   std::vector<Absender> testVect1 = db.getAlleAbsender();
+   for (Absender i : testVect1)
+   {
+      std::cout << i.getName() << ", " << i.getAdresse() << ", " << i.getEmailadresse() << std::endl;
+   };
+
+   std::vector<Absender> testVect2 = db.getAlleAbsender();
+   for (Absender i : testVect2)
+   {
+      std::cout << i.getName() << ", " << i.getAdresse() << ", " << i.getEmailadresse() << std::endl;
+   };
 
    //Hohle den ersten Empfaenger aus der DB
 //   Empfaenger temp = db.getErstenEmpfaenger();

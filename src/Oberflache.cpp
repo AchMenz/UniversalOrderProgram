@@ -24,6 +24,7 @@ Oberflache::Oberflache(QMainWindow *parent) : QMainWindow(parent){
 */
 
 	DB db("db");
+    db.createTables(Helper::getSqlFromFile("db.sql"));
 
 	//db.deleteWare("Blatt", "Reh");
 	
@@ -54,18 +55,24 @@ Oberflache::Oberflache(QMainWindow *parent) : QMainWindow(parent){
 	warenVector = db.getAlleWaren();
 	
 	
+    Empfaenger temp = db.getErstenEmpfaenger();
+    std::cout << temp.getName() << ", " << temp.getAdresse() << ", " << temp.getEmailadresse() << std::endl;
+    Empfaenger temp1 = db.getErstenEmpfaenger();
+    std::cout << temp1.getName() << ", " << temp1.getAdresse() << ", " << temp1.getEmailadresse() << std::endl;
+    Empfaenger temp2 = db.getErstenEmpfaenger();
+    std::cout << temp2.getName() << ", " << temp2.getAdresse() << ", " << temp2.getEmailadresse() << std::endl;
 	
-	NameAbsenderEdit->insert(QString::fromStdString(db.getAlleAbsender()[0].getName()));
+    NameAbsenderEdit->insert(QString::fromStdString(db.getErstenAbsender().getName()));
 		QTextDocument* ED;
-		ED -> setPlainText(QString::fromStdString(db.getAlleAbsender()[0].getAdresse()));
+        ED -> setPlainText(QString::fromStdString(db.getErstenAbsender().getAdresse()));
 	AdresseAbsenderEdit->setDocument(ED);
-	EmailAbsenderEdit->insert(QString::fromStdString(db.getAlleAbsender()[0].getEmailadresse()));
+    EmailAbsenderEdit->insert(QString::fromStdString(db.getErstenAbsender().getEmailadresse()));
 	
-	NameEmpfaengerEdit->insert(QString::fromStdString(db.getAlleEmpfaenger()[0].getName()));
+    NameEmpfaengerEdit->insert(QString::fromStdString(db.getErstenEmpfaenger().getName()));
 		QTextDocument* AD;
-		AD -> setPlainText(QString::fromStdString(db.getAlleEmpfaenger()[0].getAdresse()));
+        AD -> setPlainText(QString::fromStdString(db.getErstenEmpfaenger().getAdresse()));
 	AdresseEmpfaengerEdit->setDocument(AD);
-	EmailEmpfaengerEdit->insert(QString::fromStdString(db.getAlleEmpfaenger()[0].getEmailadresse()));
+    EmailEmpfaengerEdit->insert(QString::fromStdString(db.getErstenEmpfaenger().getEmailadresse()));
 	
 	
 	

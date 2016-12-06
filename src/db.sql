@@ -56,8 +56,19 @@ CREATE TABLE Absender (
     Emailadresse TEXT    NOT NULL
 );
 
+-- Table: InfoBestellung
+DROP TABLE IF EXISTS InfoBestellung;
+
+CREATE TABLE InfoBestellung (
+    ID        INTEGER PRIMARY KEY AUTOINCREMENT,
+    Zieldatum STRING  NOT NULL,
+    Zielzeit  STRING,
+    Kommentar TEXT
+);
+
 INSERT INTO Empfaenger (Name, Emailadresse, Adresse) VALUES ("unbekannt", "unbekannt", "unbekannt");
 INSERT INTO Absender (Name, Emailadresse, Adresse) VALUES ("unbekannt", "unbekannt", "unbekannt");
+INSERT INTO InfoBestellung (Zieldatum, Zielzeit, Kommentar) VALUES ("jjjj.mm.dd", "", "");
 
 COMMIT TRANSACTION;
 PRAGMA foreign_keys = on;
