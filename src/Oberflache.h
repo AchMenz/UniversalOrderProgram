@@ -8,6 +8,7 @@
 #include <string>
 #include "Ware.h"
 #include "Warengruppe.h"
+#include "DB.h"
 
 using namespace std;
 
@@ -30,7 +31,6 @@ class Oberflache : public QMainWindow, public Ui::MainWindow{
 		
 		
 	private:
-		//bool b = true;
 		vector<string> warenNameVector;
 		vector<Ware> warenVector;
 		vector<Ware> bestelltWarenVector;

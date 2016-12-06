@@ -66,6 +66,9 @@ public:
    //gibt einen Vector aus allen Namen aus der Tabelle "Emfaenger" zurück
    std::vector<std::string> getAlleEmpfaengerNamen();
    
+   //gibt ein Objekt vom Typ "Empfaenger" zurück
+   Empfaenger getErstenEmpfaenger();
+   
    //gibt einen Vector aus allen Namen aus der Tabelle "Absender" zurück
    std::vector<std::string> getAlleAbsenderNamen();
    

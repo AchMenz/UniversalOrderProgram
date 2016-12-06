@@ -8,6 +8,8 @@
 #include <string> 
 #include <Warengruppe.h>
 #include <QMessageBox>
+#include "Helper.h"
+//#include "Empfaenger.h"
 
 #include <sstream>
 
@@ -21,29 +23,48 @@ Oberflache::Oberflache(QMainWindow *parent) : QMainWindow(parent){
 *Daten aus Datenbank lesen	sortiert
 */
 
-DB db("db");
+	DB db("db");
 
-
-
-
+	//db.deleteWare("Blatt", "Reh");
 	
-	Ware Schinken = Ware("Schinken","Fleisch",3.3,3.4,3.5,3.6,"kommentar Schinken");//debugging
-	Ware Banane = Ware("Banane","Obst",2.5,2.6,2.7,2.8,"kommentar Banane");//debugging
-	Ware Paprika = Ware("Paprika","Gemuese",2.4,2.5,2.6,2.7,"kommentar Paprika");//debugging
-	Ware Salami = Ware("Salami","Fleisch",2.2,2.3,2.4,2.5,"kommentar Salami");//debugging
+	 // db.createTables(Helper::getSqlFromFile("db.sql"));
+
+	 // db.insertRecordInWarengruppe("Reh", "Hat ein kleines Gehörn.");
+	 // db.insertRecordInWarengruppe("Hirsch", "Hat ein großes Geweih.");
+	 // db.insertRecordInWarengruppe("Wildschwein", "Kann Trüffel erschnüffeln");
+ 
+	 // db.insertRecordInWare("Filet", "Reh");
+	 // db.insertRecordInWare("Haxen", "Hirsch");
+	 // db.insertRecordInWare("Blatt", "Reh");
+	 // db.insertRecordInWare("Lende", "Hirsch");
+	 // db.insertRecordInWare("Wurstfleisch", "Wildschwein");
+
+	std::cout << db.getAlleEmpfaenger()[0].getName() << std::endl;
 	
-	warenVector.push_back(Salami);//debugging
-	warenVector.push_back(Schinken);//debugging
-	warenVector.push_back(Paprika);//debugging
-	warenVector.push_back(Banane);//debugging
+	//Ware Schinken = Ware("Schinken","Fleisch",3.3,3.4,3.5,3.6,"kommentar Schinken");//debugging
+	//Ware Banane = Ware("Banane","Obst",2.5,2.6,2.7,2.8,"kommentar Banane");//debugging
+	//Ware Paprika = Ware("Paprika","Gemuese",2.4,2.5,2.6,2.7,"kommentar Paprika");//debugging
+	//Ware Salami = Ware("Salami","Fleisch",2.2,2.3,2.4,2.5,"kommentar Salami");//debugging
 	
+	//warenVector.push_back(Salami);//debugging
+	//warenVector.push_back(Schinken);//debugging
+	//warenVector.push_back(Paprika);//debugging
+	//warenVector.push_back(Banane);//debugging
+	
+	warenVector = db.getAlleWaren();
+	
+	//select die einen Vector<Warengruppe> zurück gibt
+	//warenGruppeVector = db.getAlleWarengruppenNamen();
 	
 	
 	
 //Daten werden auf Oberfläche geladen	
 	for(unsigned i3 = 0;i3<warenVector.size();++i3){		
 		warenNameVector.push_back(warenVector[i3].getWarenGruppeName() + " " + warenVector[i3].getWarenName());
-		warenGruppeVector.push_back(Warengruppe(warenVector[i3].getWarenGruppeName(), ""));
+	}
+	
+	for(unsigned i4 = 0; i4<db.getAlleWarengruppenNamen().size();++i4){
+		warenGruppeVector.push_back(Warengruppe(db.getAlleWarengruppenNamen()[i4], ""));
 	}
 
 	WarenTW->sortItems(0);
@@ -71,14 +92,18 @@ void Oberflache::generiereWare(){
 */
 
 	//WarenGruppeCB
-
+	DB db("db");
+	
 	Ware w1 = Ware((WarenNameHinzuEdit -> text()).toStdString(),WarenGruppeCB -> currentText().toStdString(),0,0,0,0,"");
-	string s = w1.getWarenName() + " " + w1.getWarenGruppeName();
+	string s =  w1.getWarenGruppeName()+ " " + w1.getWarenName();
+	
+	db.insertRecordInWare(WarenNameHinzuEdit -> text().toStdString(), WarenGruppeCB -> currentText().toStdString());
 	
 	warenVector.push_back(w1);
 	warenNameVector.push_back(s);
+	std::sort(warenNameVector.begin(), warenNameVector.end());
 	
-	WarenTW->sortItems(0);
+	
 		this -> aktualisiereOberflaeche();
 	}
 	
@@ -132,9 +157,9 @@ void Oberflache::generiereWare(){
 	}
 	
 	void Oberflache::versendeEmail(){
-		//std::cout << "versendeEmail" << std::endl;//debugging
 		//JÖRG!!!!
 		//hier soll die email generiert werden und dann mit einem EmailProgramm(Thunderbird) verschickt werden
+		
 	}
 	
 	void Oberflache::generiereWarenGruppe(){
@@ -142,11 +167,14 @@ void Oberflache::generiereWare(){
 *Warengruppe wird generiert
 */
 		
+		DB db("db");
 		
 		Warengruppe wp = Warengruppe(WarenGruppeHinzuEdit -> text().toStdString(),WarenGruppeInfoEdit -> toPlainText().toStdString());
+		db.insertRecordInWarengruppe(WarenGruppeHinzuEdit -> text().toStdString(), WarenGruppeInfoEdit -> toPlainText().toStdString());
 		
 		warenGruppeVector.push_back(wp);
 		
+		//kann das weg?
 		vector<string> v;
 		
 		for(unsigned i1 = 0;i1<warenGruppeVector.size();++i1){
@@ -164,7 +192,16 @@ void Oberflache::generiereWare(){
 	
 	void Oberflache::aktualisiereOberflaeche(){	
 		
+		DB db("db");
 		
+		
+		std::vector<std::string> testVect = db.getAlleWarengruppenNamen();
+	for (std::string i : testVect)
+		{
+		std::cout << i << std::endl;
+		}
+		std::cout << " " << std::endl;
+		std::cout << "test" << std::endl;
 		
 			WareEntfCB -> clear();
 			WarenGruppeCB -> clear();
@@ -182,9 +219,11 @@ void Oberflache::generiereWare(){
 			}
 		//befüllt Haupttabelle
 			for(unsigned i3 = 0;i3<warenVector.size();++i3){
+				disconnect(WarenTW, 0, 0, 0);
 				WarenTW->insertRow( WarenTW->rowCount() );
 					
-				//std::cout << warenVector[i3].getWarenName() << std::endl;
+				//std::cout << "Ware: " + warenVector[i3].getWarenName() << std::endl;
+				//std::cout << "WarenGruppe: " + warenVector[i3].getWarenGruppeName() << std::endl;
 					
 				float gpreisd = 0;
 				
@@ -231,21 +270,23 @@ void Oberflache::generiereWare(){
 				flags &= ~Qt::ItemIsEditable; 
 				WarenTW->item(i3, 1)->setFlags(flags);
 				
+				WarenTW->sortItems(0);
 				
 			}
+			connect(WarenTW, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(zelleaktualisiert(QTableWidgetItem*)));
 	}
 	
 	void Oberflache::entferneWare(){
 		string s = 	WareEntfCB -> currentText().toStdString();
-		
-		//std::cout << s << std::endl;
-	
+		DB db("db");
+		//int z = 0;
 		for(unsigned i1 = 0;i1<warenVector.size();++i1){
-			//if(strcmp(warenVector[i1].getWarenName() + " " + warenVector[i1].getWarenGruppeName(),s) == 0){
-				
 				//std::cout << warenVector[i1].getWarenGruppeName() + " " + warenVector[i1].getWarenName() << std::endl;
-				
+				//z++;
 			if( (warenVector[i1].getWarenGruppeName()+ " " + warenVector[i1].getWarenName() ).compare(s) == 0){
+				std::cout << "Ware: " + warenVector[i1].getWarenName() << std::endl;
+				std::cout << "WarenGruppe: " + warenVector[i1].getWarenGruppeName() << std::endl;
+				db.deleteWare(warenVector[i1].getWarenName(), warenVector[i1].getWarenGruppeName());
 				warenVector.erase(warenVector.begin()+ i1 );
 				break;
 			}
@@ -294,10 +335,11 @@ void Oberflache::generiereWare(){
 		
 		this -> aktualisiereOberflaeche();
 		
-		connect(WarenTW, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(zelleaktualisiert(QTableWidgetItem*)));
+		//connect(WarenTW, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(zelleaktualisiert(QTableWidgetItem*)));
 	}
 	
 	void Oberflache::entferneWarenGruppe(){
+		DB db("db");
 		bool b = true;
 		for(unsigned i1 = 0;i1<warenVector.size();++i1){
 			if(warenVector[i1].getWarenGruppeName().compare(WarenGruppeEntfCB -> currentText().toStdString()) == 0){
@@ -309,6 +351,7 @@ void Oberflache::generiereWare(){
 			for(unsigned i3 = 0;i3<warenGruppeVector.size();++i3){
 				if(warenGruppeVector[i3].getWarenGruppeName().compare(WarenGruppeEntfCB -> currentText().toStdString())== 0){
 					warenGruppeVector.erase(warenGruppeVector.begin() + i3);
+					db.deleteWarengruppe(warenGruppeVector[i3].getWarenGruppeName());
 				}
 			}
 			this -> aktualisiereOberflaeche();

@@ -54,6 +54,8 @@ CREATE TABLE Absender (
     Emailadresse TEXT    NOT NULL
 );
 
+INSERT INTO Empfaenger (Name, Emailadresse, Adresse) VALUES ("unbekannt", "unbekannt", "unbekannt");
+INSERT INTO Absender (Name, Emailadresse, Adresse) VALUES ("unbekannt", "unbekannt", "unbekannt");
 
 COMMIT TRANSACTION;
 PRAGMA foreign_keys = on;

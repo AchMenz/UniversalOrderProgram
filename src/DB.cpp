@@ -39,12 +39,12 @@ int DB::callback(void *NotUsed, int argc, char **argv, char **azColName)
 int DB::callback_select(void *data, int argc, char **argv, char **azColName)
 {
    int i;
-   //fprintf(stderr, "%s: ", (const char*)data);
+   fprintf(stderr, "%s: ", (const char*)data);
    
    //leere Tempmap
    temp.clear();
    for(i=0; i<argc; i++){
-      //printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+      printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
       temp[azColName[i]] = (char*) (argv[i] ? argv[i] : "NULL");
    }
    
@@ -69,6 +69,7 @@ void DB::executeSqlInsert(sqlite3 *db, char* sql, char *zErrMsg, int rc, std::st
    else
    {
       fprintf(stderr, "SQL-Operation '%s' executed successfully\n", funktionsname.c_str());
+	  fprintf(stderr, "SQL-Insert: %s", sql);
    }
 }
 
@@ -85,7 +86,8 @@ void DB::executeSqlSelect(sqlite3 *db, char *sql, char *zErrMsg, int rc, const v
    else
    {
       fprintf(stderr,"SQL-Operation '%s' executed successfully\n", funktionsname.c_str());
-   }
+	  fprintf(stderr, "SQL-Insert: %s", sql);
+  }
    
    //stelle die Schleifenvariable wieder auf 0
    countDatasets = 0;
@@ -220,6 +222,7 @@ std::vector<std::string> DB::getAlleWarengruppenNamen()
       //füge Strings "Name" zum Resultatvektor hinzu
       result.push_back(tempMap["Name"]);
    }
+   queryResult.clear();
    return result;
 }
 
@@ -260,6 +263,7 @@ std::vector<std::string> DB::getAlleEmpfaengerNamen()
       //füge Strings "Name" zum Resultatvektor hinzu
       result.push_back(tempMap["Name"]);
    }
+   queryResult.clear();
    return result;
 }
 
@@ -300,6 +304,7 @@ std::vector<std::string> DB::getAlleAbsenderNamen()
       //füge Strings "Name" zum Resultatvektor hinzu
       result.push_back(tempMap["Name"]);
    }
+   queryResult.clear();   
    return result;
 }
 
@@ -343,7 +348,52 @@ std::vector<Empfaenger> DB::getAlleEmpfaenger()
       //füge Objekte zum Resultatvektor hinzu
       result.push_back(empfTemp);
    }
+   queryResult.clear();   
    return result;
+}
+
+Empfaenger DB::getErstenEmpfaenger()
+{
+   char *sql;
+   
+   //erstelle zunächst String-SQL-Anweisung
+   std::string sqlPrae;
+   //Pragma... Damit keine Fremdschlüssel eingetragen werden, die gar nicht existieren.
+   sqlPrae = "PRAGMA foreign_keys = on;\n" \
+             "SELECT * FROM Empfaenger ORDER BY Name;";
+
+   //konvertiere sqlPrae in char*
+   sql = (char*) sqlPrae.c_str();
+   
+   //erzeuge einen String mit dem Funktionsname, der executeSqlSelect übergeben wird
+   std::string funktionsname(__func__);
+   
+   //führe Sql-Code aus
+   //Die globale Variable "queryResult" wird dadurch mit einer Map belegt.
+   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname);
+   
+   //hohle das query-result aus der globalen Variable queryResult
+   //der Resultatvektor
+   std::vector<Empfaenger> result;
+   //eine Zwischenspeichermap
+   std::map<std::string, std::string> tempMap;
+   //durchlaufe queryResult
+   for (auto const& dataset : queryResult)
+   {
+      //durchlaufe die Maps in queryResult
+      for (auto const& valuesOfDataset : dataset.second)
+      {
+         //fülle die Zwischenspeichermap
+         tempMap[valuesOfDataset.first] = valuesOfDataset.second;
+      }
+      
+      //erzeuge Objekte vom Typ Empfaenger aus der Zwischenspeichermap
+      Empfaenger empfTemp(tempMap["Name"], tempMap["Emailadresse"], tempMap["Adresse"]);
+      //füge Objekte zum Resultatvektor hinzu
+      result.push_back(empfTemp);
+   }
+   queryResult.clear();   
+   return result[0];
 }
 
 std::vector<Absender> DB::getAlleAbsender()
@@ -386,6 +436,7 @@ std::vector<Absender> DB::getAlleAbsender()
       //füge Objekte zum Resultatvektor hinzu
       result.push_back(absTemp);
    }
+   queryResult.clear();
    return result;
 }
 
@@ -430,6 +481,7 @@ std::vector<Ware> DB::getAlleWaren()
       //füge Objekte vom Typ Ware zum Resultatvektor hinzu
       result.push_back(wareTemp);
    }
+   queryResult.clear();
    return result;
 }
 
