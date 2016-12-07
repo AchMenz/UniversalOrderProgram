@@ -24,21 +24,21 @@ Oberflache::Oberflache(QMainWindow *parent) : QMainWindow(parent){
 */
 
 	DB db("db");
-    db.createTables(Helper::getSqlFromFile("db.sql"));
+    //db.createTables(Helper::getSqlFromFile("db.sql"));
 
 	//db.deleteWare("Blatt", "Reh");
 	
 	 // db.createTables(Helper::getSqlFromFile("db.sql"));
 
-     db.insertRecordInWarengruppe("Reh", "Hat ein kleines Gehörn.");
-     db.insertRecordInWarengruppe("Hirsch", "Hat ein großes Geweih.");
-     db.insertRecordInWarengruppe("Wildschwein", "Kann Trüffel erschnüffeln");
+     // db.insertRecordInWarengruppe("Reh", "Hat ein kleines Gehörn.");
+     // db.insertRecordInWarengruppe("Hirsch", "Hat ein großes Geweih.");
+     // db.insertRecordInWarengruppe("Wildschwein", "Kann Trüffel erschnüffeln");
  
-     db.insertRecordInWare("Filet", "Reh");
-     db.insertRecordInWare("Haxen", "Hirsch");
-     db.insertRecordInWare("Blatt", "Reh");
-     db.insertRecordInWare("Lende", "Hirsch");
-     db.insertRecordInWare("Wurstfleisch", "Wildschwein");
+     // db.insertRecordInWare("Filet", "Reh");
+     // db.insertRecordInWare("Haxen", "Hirsch");
+     // db.insertRecordInWare("Blatt", "Reh");
+     // db.insertRecordInWare("Lende", "Hirsch");
+     // db.insertRecordInWare("Wurstfleisch", "Wildschwein");
 
 	//std::cout << db.getAlleEmpfaenger()[0].getName() << std::endl;
 	
@@ -344,20 +344,24 @@ void Oberflache::generiereWare(){
 					break;   
 				case 2:
 					warenVector[x -> row()].setPreisProGewicht(x -> text().toFloat());
-					//db.updatePreisProKg(warenVector[x -> row()].getWarenName(), warenVector[x -> row()].getWarenGruppeName(), warenVector[x -> row()].getPreisProGewicht());
-                    db.updatePreisProKg("Lende","Hirsch",7.5);
+					db.updatePreisProKg(warenVector[x -> row()].getWarenName(), warenVector[x -> row()].getWarenGruppeName(), warenVector[x -> row()].getPreisProGewicht());
+                   // db.updatePreisProKg("Lende","Hirsch",7.5);
 					break;
 				case 3:
 					warenVector[x -> row()].setPreisProStueck(x -> text().toFloat());
+					db.updatePreisProSt(warenVector[x -> row()].getWarenName(), warenVector[x -> row()].getWarenGruppeName(), warenVector[x -> row()].getPreisProStueck());
 					break;
 				case 4:
 					warenVector[x -> row()].setMengeInGewicht(x -> text().toFloat());
+					db.updateMengeInKg(warenVector[x -> row()].getWarenName(), warenVector[x -> row()].getWarenGruppeName(), warenVector[x -> row()].getMengeInGewicht());
 					break;
 				case 5:
 					warenVector[x -> row()].setMengeInStueck(x -> text().toFloat());
+					db.updateMengeInSt(warenVector[x -> row()].getWarenName(), warenVector[x -> row()].getWarenGruppeName(), warenVector[x -> row()].getMengeInStueck());
 					break;
 				case 6:
 					warenVector[x -> row()].setKommentar(x -> text().toStdString());
+					db.updateKommentar(warenVector[x -> row()].getWarenName(), warenVector[x -> row()].getWarenGruppeName(), warenVector[x -> row()].getKommentar());
 					break;
 			}		
 	
