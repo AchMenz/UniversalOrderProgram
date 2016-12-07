@@ -30,15 +30,15 @@ Oberflache::Oberflache(QMainWindow *parent) : QMainWindow(parent){
 	
 	 // db.createTables(Helper::getSqlFromFile("db.sql"));
 
-	 //db.insertRecordInWarengruppe("Reh", "Hat ein kleines Gehörn.");
-	 //db.insertRecordInWarengruppe("Hirsch", "Hat ein großes Geweih.");
-	 //db.insertRecordInWarengruppe("Wildschwein", "Kann Trüffel erschnüffeln");
+	 // db.insertRecordInWarengruppe("Reh", "Hat ein kleines Gehörn.");
+	 // db.insertRecordInWarengruppe("Hirsch", "Hat ein großes Geweih.");
+	 // db.insertRecordInWarengruppe("Wildschwein", "Kann Trüffel erschnüffeln");
  
-	 //db.insertRecordInWare("Filet", "Reh");
-	 //db.insertRecordInWare("Haxen", "Hirsch");
-	 //db.insertRecordInWare("Blatt", "Reh");
-	 //db.insertRecordInWare("Lende", "Hirsch");
-	 //db.insertRecordInWare("Wurstfleisch", "Wildschwein");
+	 // db.insertRecordInWare("Filet", "Reh");
+	 // db.insertRecordInWare("Haxen", "Hirsch");
+	 // db.insertRecordInWare("Blatt", "Reh");
+	 // db.insertRecordInWare("Lende", "Hirsch");
+	 // db.insertRecordInWare("Wurstfleisch", "Wildschwein");
 
 	//std::cout << db.getAlleEmpfaenger()[0].getName() << std::endl;
 	
@@ -53,37 +53,23 @@ Oberflache::Oberflache(QMainWindow *parent) : QMainWindow(parent){
 	//warenVector.push_back(Banane);//debugging
 	
 	warenVector = db.getAlleWaren();
+	Absender ersterAbsender = db.getErstenAbsender();
+	Empfaenger ersterEmpfaenger = db.getErstenEmpfaenger();
 	
-	
-    //Empfaenger temp = db.getErstenEmpfaenger();
-    //std::cout << temp.getName() << ", " << temp.getAdresse() << ", " << temp.getEmailadresse() << std::endl;
-    //Empfaenger temp1 = db.getErstenEmpfaenger();
-    //std::cout << temp1.getName() << ", " << temp1.getAdresse() << ", " << temp1.getEmailadresse() << std::endl;
-    //Empfaenger temp2 = db.getErstenEmpfaenger();
-    //std::co
-    //ut << temp2.getName() << ", " << temp2.getAdresse() << ", " << temp2.getEmailadresse() << std::endl;
-	
-	  Absender ersterAbsender = db.getErstenAbsender();
-	  Empfaenger ersterEmpfaenger = db.getErstenEmpfaenger();
-	
-		std::cout << ersterEmpfaenger.getName() << ", " << ersterEmpfaenger.getAdresse() << ", " << ersterEmpfaenger.getEmailadresse() << std::endl;
-		std::cout << ersterAbsender.getName() << ", " << ersterAbsender.getAdresse() << ", " << ersterAbsender.getEmailadresse() << std::endl;
+		// std::cout << ersterEmpfaenger.getName() << ", " << ersterEmpfaenger.getAdresse() << ", " << ersterEmpfaenger.getEmailadresse() << std::endl;
+		// std::cout << ersterAbsender.getName() << ", " << ersterAbsender.getAdresse() << ", " << ersterAbsender.getEmailadresse() << std::endl;
 
-		db.updateWerteInInfoBestellung("Kommentar", "Bitte geben Sie 15 rote Kisten mit.");
-		InfoBestellung info = db.getErsteInfoBestellung();
-		std::cout << info.getZieldatum() << ", " << info.getZielzeit() << ", " << info.getKommentar() << std::endl;
+		 // db.updateWerteInInfoBestellung("Kommentar", "Bitte geben Sie 15 rote Kisten mit.");
+		 // InfoBestellung info = db.getErsteInfoBestellung();
+		// std::cout << info.getZieldatum() << ", " << info.getZielzeit() << ", " << info.getKommentar() << std::endl;
 	
-    //NameAbsenderEdit->insert(QString::fromStdString(ersterAbsender.getName()));
-		//QTextDocument* ED;
-        //ED -> setPlainText(QString::fromStdString(ersterAbsender.getAdresse()));
-	//AdresseAbsenderEdit->setDocument(ED);
-    //EmailAbsenderEdit->insert(QString::fromStdString(ersterAbsender.getEmailadresse()));
+	NameAbsenderEdit->insert(QString::fromStdString(ersterAbsender.getName()));
+	AdresseAbsenderEdit->textCursor().insertText(QString::fromStdString(ersterAbsender.getAdresse()));
+    EmailAbsenderEdit->insert(QString::fromStdString(ersterAbsender.getEmailadresse()));
 	
-    //NameEmpfaengerEdit->insert(QString::fromStdString(ersterEmpfaenger.getName()));
-		//QTextDocument* AD;
-        //AD -> setPlainText(QString::fromStdString(ersterEmpfaenger.getAdresse()));
-	//AdresseEmpfaengerEdit->setDocument(AD);
-    //EmailEmpfaengerEdit->insert(QString::fromStdString(ersterEmpfaenger.getEmailadresse()));
+    NameEmpfaengerEdit->insert(QString::fromStdString(ersterEmpfaenger.getName()));
+	AdresseEmpfaengerEdit->textCursor().insertText(QString::fromStdString(ersterEmpfaenger.getAdresse()));
+    EmailEmpfaengerEdit->insert(QString::fromStdString(ersterEmpfaenger.getEmailadresse()));
 	
 	
 	
@@ -393,7 +379,27 @@ void Oberflache::generiereWare(){
 	}
 	
 	void Oberflache::aktualisiereEinstellungen(){
-		std::cout << "test"<< std::endl;
+		// std::cout << "test"<< std::endl;
+		
+		DB db("db");
+		
+		// WarenNameHinzuEdit -> text()).toStdString()
+		
+		// NameAbsenderEdit->insert(QString::fromStdString(ersterAbsender.getName()));
+	// AdresseAbsenderEdit->textCursor().insertText(QString::fromStdString(ersterAbsender.getAdresse()));
+    // EmailAbsenderEdit->insert(QString::fromStdString(ersterAbsender.getEmailadresse()));
+	
+    // NameEmpfaengerEdit->insert(QString::fromStdString(ersterEmpfaenger.getName()));
+	// AdresseEmpfaengerEdit->textCursor().insertText(QString::fromStdString(ersterEmpfaenger.getAdresse()));
+    // EmailEmpfaengerEdit->insert(QString::fromStdString(ersterEmpfaenger.getEmailadresse()));
+		
+		db.updateErstenWertInAbsenderEmpfaenger("Absender", "Name", NameAbsenderEdit->text().toStdString());
+		db.updateErstenWertInAbsenderEmpfaenger("Absender", "Adresse", AdresseAbsenderEdit->toPlainText().toStdString());
+		db.updateErstenWertInAbsenderEmpfaenger("Absender", "Emailadresse", NameAbsenderEdit->text().toStdString());
+		
+		db.updateErstenWertInAbsenderEmpfaenger("Empfaenger", "Name", NameEmpfaengerEdit->text().toStdString());
+		db.updateErstenWertInAbsenderEmpfaenger("Empfaenger", "Adresse", AdresseEmpfaengerEdit->toPlainText().toStdString());
+		db.updateErstenWertInAbsenderEmpfaenger("Empfaenger", "Emailadresse", NameEmpfaengerEdit->text().toStdString());
 	}
 	
 	//ALT
