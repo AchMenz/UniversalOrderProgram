@@ -701,6 +701,26 @@ void DB::updateWerteInAbsenderEmpfaenger(std::string tabelle, std::string name, 
    executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname);
 }
 
+void DB::updateErstenWertInAbsenderEmpfaenger(std::string tabelle, std::string feld, std::string wert)
+{
+   char *sql;
+   
+   //erstelle zunächst String-SQL-Anweisung
+   std::string sqlPrae;
+   //Pragma... Damit keine Fremdschlüssel eingetragen werden, die gar nicht existieren.
+   sqlPrae = "PRAGMA foreign_keys = on;\n" \
+             "UPDATE " + tabelle + " SET " + feld + " = '" + wert + "';";
+
+   //konvertiere sqlPrae in char*
+   sql = (char*) sqlPrae.c_str();
+   
+   //erzeuge einen String mit dem Funktionsname, der executeSqlSelect übergeben wird
+   std::string funktionsname(__func__);
+   
+   //führe Sql-Code aus
+   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname);
+}
+
 void DB::updateWerteInInfoBestellung(std::string feld, std::string wert)
 {
    char *sql;
