@@ -21,6 +21,8 @@ DB::~DB()
 
 //hier werden die Werte für queryResult zwischengespeichert
 std::map <std::string, std::string> temp;
+//hier werden die Abfrageresultate in einer globalen Variable zwischengespeichert (Value ist Map: temp)
+std::map <int, std::map<std::string, std::string> > queryResult;
 //Schleifenzählvariable für callback_select...-Durchläufe
 int countDatasets = 0;
 
@@ -34,7 +36,7 @@ int DB::callback(void *NotUsed, int argc, char **argv, char **azColName)
    return 0;
 }
 
-int DB::callback_select(void *data, int argc, char **argv, char **azColName, std::map <int, std::map<std::string, std::string> > queryResult)
+int DB::callback_select(void *data, int argc, char **argv, char **azColName)
 {
    int i;
    fprintf(stderr, "%s: ", (const char*)data);
@@ -71,10 +73,10 @@ void DB::executeSqlInsert(sqlite3 *db, char* sql, char *zErrMsg, int rc, std::st
    }
 }
 
-void DB::executeSqlSelect(sqlite3 *db, char *sql, char *zErrMsg, int rc, const void* data, std::string funktionsname, std::map <int, std::map<std::string, std::string> > queryResult)
+void DB::executeSqlSelect(sqlite3 *db, char *sql, char *zErrMsg, int rc, const void* data, std::string funktionsname)
 {
    /* Execute SQL statement */
-   rc = sqlite3_exec(db, sql, callback_select(queryResult), (void*)data, &zErrMsg);
+   rc = sqlite3_exec(db, sql, callback_select, (void*)data, &zErrMsg);
    if( rc != SQLITE_OK )
    {
       fprintf(stderr, "SQL-Operation error in '%s'.\n", funktionsname.c_str());
@@ -84,7 +86,7 @@ void DB::executeSqlSelect(sqlite3 *db, char *sql, char *zErrMsg, int rc, const v
    else
    {
       fprintf(stderr,"SQL-Operation '%s' executed successfully\n", funktionsname.c_str());
-	   fprintf(stderr, "SQL-Insert: %s", sql);
+	   //fprintf(stderr, "SQL-Insert: %s", sql);
   }
    
    //stelle die Schleifenvariable wieder auf 0
@@ -185,9 +187,6 @@ void DB::insertRecordInAbsenderEmpfaenger(std::string tabelle, std::string name 
 
 std::vector<std::string> DB::getAlleWarengruppenNamen()
 {
-   //hier werden die Abfrageresultate in einer globalen Variable zwischengespeichert (Value ist Map: temp)
-   std::map <int, std::map<std::string, std::string> > queryResult;
-
    char *sql;
    
    //erstelle zunächst String-SQL-Anweisung
@@ -204,7 +203,7 @@ std::vector<std::string> DB::getAlleWarengruppenNamen()
    
    //führe Sql-Code aus
    //Die globale Variable "queryResult" wird dadurch mit einer Map belegt.
-   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname, queryResult);
+   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname);
    
    //hohle das query-result aus der globalen Variable queryResult
    //der Resultatvektor
@@ -229,9 +228,6 @@ std::vector<std::string> DB::getAlleWarengruppenNamen()
 
 std::vector<std::string> DB::getAlleEmpfaengerNamen()
 {
-   //hier werden die Abfrageresultate in einer globalen Variable zwischengespeichert (Value ist Map: temp)
-   std::map <int, std::map<std::string, std::string> > queryResult;
-
    char *sql;
    
    //erstelle zunächst String-SQL-Anweisung
@@ -248,7 +244,7 @@ std::vector<std::string> DB::getAlleEmpfaengerNamen()
    
    //führe Sql-Code aus
    //Die globale Variable "queryResult" wird dadurch mit einer Map belegt.
-   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname, queryResult);
+   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname);
    
    //hohle das query-result aus der globalen Variable queryResult
    //der Resultatvektor
@@ -273,9 +269,6 @@ std::vector<std::string> DB::getAlleEmpfaengerNamen()
 
 std::vector<std::string> DB::getAlleAbsenderNamen()
 {
-   //hier werden die Abfrageresultate in einer globalen Variable zwischengespeichert (Value ist Map: temp)
-   std::map <int, std::map<std::string, std::string> > queryResult;
-
    char *sql;
    
    //erstelle zunächst String-SQL-Anweisung
@@ -292,7 +285,7 @@ std::vector<std::string> DB::getAlleAbsenderNamen()
    
    //führe Sql-Code aus
    //Die globale Variable "queryResult" wird dadurch mit einer Map belegt.
-   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname, queryResult);
+   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname);
    
    //hohle das query-result aus der globalen Variable queryResult
    //der Resultatvektor
@@ -333,7 +326,7 @@ std::vector<Empfaenger> DB::getAlleEmpfaenger()
    
    //führe Sql-Code aus
    //Die globale Variable "queryResult" wird dadurch mit einer Map belegt.
-   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname, queryResult);
+   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname);
    
    //hohle das query-result aus der globalen Variable queryResult
    //der Resultatvektor
@@ -361,9 +354,6 @@ std::vector<Empfaenger> DB::getAlleEmpfaenger()
 
 Empfaenger DB::getErstenEmpfaenger()
 {
-   //hier werden die Abfrageresultate in einer globalen Variable zwischengespeichert (Value ist Map: temp)
-   std::map <int, std::map<std::string, std::string> > queryResult;
-
    char *sql;
    
    //erstelle zunächst String-SQL-Anweisung
@@ -380,7 +370,7 @@ Empfaenger DB::getErstenEmpfaenger()
    
    //führe Sql-Code aus
    //Die globale Variable "queryResult" wird dadurch mit einer Map belegt.
-   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname, queryResult);
+   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname);
    
    //hohle das query-result aus der globalen Variable queryResult
    //der Resultatvektor
@@ -408,9 +398,6 @@ Empfaenger DB::getErstenEmpfaenger()
 
 Absender DB::getErstenAbsender()
 {
-   //hier werden die Abfrageresultate in einer globalen Variable zwischengespeichert (Value ist Map: temp)
-   std::map <int, std::map<std::string, std::string> > queryResult;
-
    char *sql;
    
    //erstelle zunächst String-SQL-Anweisung
@@ -427,7 +414,7 @@ Absender DB::getErstenAbsender()
    
    //führe Sql-Code aus
    //Die globale Variable "queryResult" wird dadurch mit einer Map belegt.
-   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname, queryResult);
+   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname);
    
    //hohle das query-result aus der globalen Variable queryResult
    //der Resultatvektor
@@ -456,9 +443,6 @@ Absender DB::getErstenAbsender()
 
 std::vector<Absender> DB::getAlleAbsender()
 {
-   //hier werden die Abfrageresultate in einer globalen Variable zwischengespeichert (Value ist Map: temp)
-   std::map <int, std::map<std::string, std::string> > queryResult;
-
    char *sql;
    
    //erstelle zunächst String-SQL-Anweisung
@@ -475,7 +459,7 @@ std::vector<Absender> DB::getAlleAbsender()
    
    //führe Sql-Code aus
    //Die globale Variable "queryResult" wird dadurch mit einer Map belegt.
-   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname, queryResult);
+   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname);
    
    //hohle das query-result aus der globalen Variable queryResult
    //der Resultatvektor
@@ -503,9 +487,6 @@ std::vector<Absender> DB::getAlleAbsender()
 
 std::vector<Ware> DB::getAlleWaren()
 {
-   //hier werden die Abfrageresultate in einer globalen Variable zwischengespeichert (Value ist Map: temp)
-   std::map <int, std::map<std::string, std::string> > queryResult;
-
    char *sql;
    
    //erstelle zunächst String-SQL-Anweisung
@@ -522,7 +503,7 @@ std::vector<Ware> DB::getAlleWaren()
    
    //führe Sql-Code aus
    //Die globale Variable "queryResult" wird dadurch mit einer Map belegt.
-   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname, queryResult);
+   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname);
    
    //hohle das query-result aus der globalen Variable queryResult
    //der Resultatvektor
@@ -551,9 +532,6 @@ std::vector<Ware> DB::getAlleWaren()
 
 InfoBestellung DB::getErsteInfoBestellung()
 {
-   //hier werden die Abfrageresultate in einer globalen Variable zwischengespeichert (Value ist Map: temp)
-   std::map <int, std::map<std::string, std::string> > queryResult;
-
    char *sql;
    
    //erstelle zunächst String-SQL-Anweisung
@@ -570,36 +548,24 @@ InfoBestellung DB::getErsteInfoBestellung()
    
    //führe Sql-Code aus
    //Die globale Variable "queryResult" wird dadurch mit einer Map belegt.
-   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname, queryResult);
-   
-   fprintf(stderr, "Haltepunkt1");
-   
+   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname);
+
    //hohle das query-result aus der globalen Variable queryResult
    //der Resultatvektor
    std::vector<InfoBestellung> result;
    //eine Zwischenspeichermap
    std::map<std::string, std::string> tempMap;
 
-   fprintf(stderr, "Haltepunkt2");
-
-   fprintf(stderr, "Haltepunkt2 %s", queryResult.size());
-
-
    //durchlaufe queryResult
    for (auto const& dataset : queryResult)
    {
-      fprintf(stderr, "Haltepunkt_Schleife_außen");
-       
       //durchlaufe die Maps in queryResult
       for (auto const& valuesOfDataset : dataset.second)
       {
          //fülle die Zwischenspeichermap
          tempMap[valuesOfDataset.first] = valuesOfDataset.second;
       }
-      
-   fprintf(stderr, "Haltepunkt3");
 
-      
       //erzeuge Objekte vom Typ Infobestellung aus der Zwischenspeichermap
       InfoBestellung Temp(tempMap["Zieldatum"], tempMap["Zielzeit"], tempMap["Kommentar"]);
       //füge Objekte zum Resultatvektor hinzu
