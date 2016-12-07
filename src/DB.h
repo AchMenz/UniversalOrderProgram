@@ -107,6 +107,8 @@ public:
    //fügt in jedem "Menge"-Feld in der DB eine 0 ein
    void clearAllMengeFelder();
 
+   //ändert den Wert in "feld" = "wert" in der Tabelle InfoBestellung
+   void updateWerteInInfoBestellung(std::string feld, std::string wert);
 
 //Deletes
    //löscht eine Ware aud der Tabelle "Ware"

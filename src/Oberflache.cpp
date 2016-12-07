@@ -24,21 +24,21 @@ Oberflache::Oberflache(QMainWindow *parent) : QMainWindow(parent){
 */
 
 	DB db("db");
-  db.createTables(Helper::getSqlFromFile("db.sql"));
+  //db.createTables(Helper::getSqlFromFile("db.sql"));
 
 	//db.deleteWare("Blatt", "Reh");
 	
 	 // db.createTables(Helper::getSqlFromFile("db.sql"));
 
-	 db.insertRecordInWarengruppe("Reh", "Hat ein kleines Gehörn.");
-	 db.insertRecordInWarengruppe("Hirsch", "Hat ein großes Geweih.");
-	 db.insertRecordInWarengruppe("Wildschwein", "Kann Trüffel erschnüffeln");
+	 //db.insertRecordInWarengruppe("Reh", "Hat ein kleines Gehörn.");
+	 //db.insertRecordInWarengruppe("Hirsch", "Hat ein großes Geweih.");
+	 //db.insertRecordInWarengruppe("Wildschwein", "Kann Trüffel erschnüffeln");
  
-	 db.insertRecordInWare("Filet", "Reh");
-	 db.insertRecordInWare("Haxen", "Hirsch");
-	 db.insertRecordInWare("Blatt", "Reh");
-	 db.insertRecordInWare("Lende", "Hirsch");
-	 db.insertRecordInWare("Wurstfleisch", "Wildschwein");
+	 //db.insertRecordInWare("Filet", "Reh");
+	 //db.insertRecordInWare("Haxen", "Hirsch");
+	 //db.insertRecordInWare("Blatt", "Reh");
+	 //db.insertRecordInWare("Lende", "Hirsch");
+	 //db.insertRecordInWare("Wurstfleisch", "Wildschwein");
 
 	//std::cout << db.getAlleEmpfaenger()[0].getName() << std::endl;
 	
@@ -69,6 +69,9 @@ Oberflache::Oberflache(QMainWindow *parent) : QMainWindow(parent){
 		std::cout << ersterEmpfaenger.getName() << ", " << ersterEmpfaenger.getAdresse() << ", " << ersterEmpfaenger.getEmailadresse() << std::endl;
 		std::cout << ersterAbsender.getName() << ", " << ersterAbsender.getAdresse() << ", " << ersterAbsender.getEmailadresse() << std::endl;
 
+		db.updateWerteInInfoBestellung("Kommentar", "Bitte geben Sie 15 rote Kisten mit.");
+		InfoBestellung info = db.getErsteInfoBestellung();
+		std::cout << info.getZieldatum() << ", " << info.getZielzeit() << ", " << info.getKommentar() << std::endl;
 	
     //NameAbsenderEdit->insert(QString::fromStdString(ersterAbsender.getName()));
 		//QTextDocument* ED;
