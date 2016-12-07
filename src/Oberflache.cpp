@@ -345,7 +345,7 @@ void Oberflache::generiereWare(){
 				case 2:
 					warenVector[x -> row()].setPreisProGewicht(x -> text().toFloat());
 					//db.updatePreisProKg(warenVector[x -> row()].getWarenName(), warenVector[x -> row()].getWarenGruppeName(), warenVector[x -> row()].getPreisProGewicht());
-					db.updatePreisProKg("Lende","Hirsch",7.3);
+                    db.updatePreisProKg("Lende","Hirsch",7.5);
 					break;
 				case 3:
 					warenVector[x -> row()].setPreisProStueck(x -> text().toFloat());

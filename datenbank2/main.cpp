@@ -21,16 +21,16 @@ int main(int argc, char **argv)
 
 
 //Erzeuge Daten
-//   db.insertRecordInWarengruppe("Reh", "Hat ein kleines Gehörn.");
-//   db.insertRecordInWarengruppe("Hirsch", "Hat ein großes Geweih.");
-// 
-//   db.insertRecordInWare("Filet", "Reh");
-//   db.insertRecordInWare("Haxen", "Hirsch");
-//   db.insertRecordInWare("Blatt", "Reh");
-//   db.insertRecordInWare("Lende", "Hirsch");
-//   db.insertRecordInWare("Wurstfleisch", "Reh");
-//
-//   db.insertRecordInAbsenderEmpfaenger("Empfaenger", "Las Kalisz", "Las Kalisz\nStraße des Wildes 123\n04353 Tomnice", "laskalisz@web.pl");
+   db.insertRecordInWarengruppe("Reh", "Hat ein kleines Gehörn.");
+   db.insertRecordInWarengruppe("Hirsch", "Hat ein großes Geweih.");
+ 
+   db.insertRecordInWare("Filet", "Reh");
+   db.insertRecordInWare("Haxen", "Hirsch");
+   db.insertRecordInWare("Blatt", "Reh");
+   db.insertRecordInWare("Lende", "Hirsch");
+   db.insertRecordInWare("Wurstfleisch", "Reh");
+
+   db.insertRecordInAbsenderEmpfaenger("Empfaenger", "Las Kalisz", "Las Kalisz\nStraße des Wildes 123\n04353 Tomnice", "laskalisz@web.pl");
 
 
 
@@ -38,7 +38,7 @@ int main(int argc, char **argv)
 
 //Ändere Daten
    //db.updateKommentar("Lende", "Hirsch", "Bitte eingefroren.");
-   db.updatePreisProKg("Haxen", "Hirsch", 9.5);
+   db.updatePreisProKg("Haxen", "Hirsch",9.3);
    //db.updatePreisProSt("Lende", "Hirsch", 35.45);
    
    //ändert einen Wert in der Tabelle "Absender" oder "Empfänger"

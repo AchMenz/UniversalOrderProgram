@@ -583,7 +583,7 @@ void DB::updatePreisProKg(std::string ware, std::string warengruppe, float preis
    std::string sqlPrae;
    //Pragma... Damit keine Fremdschlüssel eingetragen werden, die gar nicht existieren.
    sqlPrae = "PRAGMA foreign_keys = on;\n" \
-             "UPDATE Ware SET Preis_pro_kg = " + std::to_string(preis) + " \
+             "UPDATE Ware SET Preis_pro_kg = '" + std::to_string(preis) + "' \
              WHERE Name = '" + ware + "' AND Warengruppe = '" + warengruppe + "';";
 
    //konvertiere sqlPrae in char*
