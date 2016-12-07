@@ -273,6 +273,7 @@ void Oberflache::generiereWare(){
 				WarenTW->setItem(i3, 4, new QTableWidgetItem(QString::fromStdString(mig)));
 				WarenTW->setItem(i3, 5, new QTableWidgetItem(QString::fromStdString(mis)));
 				WarenTW->setItem(i3, 6, new QTableWidgetItem(QString::fromStdString(gpreiss)));
+				WarenTW->setItem(i3, 7, new QTableWidgetItem(QString::fromStdString(warenVector[i3].getKommentar())));
 			
 				Qt::ItemFlags flags;
 			
@@ -285,6 +286,11 @@ void Oberflache::generiereWare(){
 				flags |= Qt::ItemIsSelectable;
 				flags &= ~Qt::ItemIsEditable; 
 				WarenTW->item(i3, 1)->setFlags(flags);
+				
+				flags = WarenTW->item(i3, 6)->flags();
+				flags |= Qt::ItemIsSelectable;
+				flags &= ~Qt::ItemIsEditable; 
+				WarenTW->item(i3, 6)->setFlags(flags);
 				
 				WarenTW->sortItems(0);
 				
@@ -359,7 +365,7 @@ void Oberflache::generiereWare(){
 					warenVector[x -> row()].setMengeInStueck(x -> text().toFloat());
 					db.updateMengeInSt(warenVector[x -> row()].getWarenName(), warenVector[x -> row()].getWarenGruppeName(), warenVector[x -> row()].getMengeInStueck());
 					break;
-				case 6:
+				case 7:
 					warenVector[x -> row()].setKommentar(x -> text().toStdString());
 					db.updateKommentar(warenVector[x -> row()].getWarenName(), warenVector[x -> row()].getWarenGruppeName(), warenVector[x -> row()].getKommentar());
 					break;
