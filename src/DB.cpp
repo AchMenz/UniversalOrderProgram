@@ -79,6 +79,7 @@ void DB::executeSqlSelect(sqlite3 *db, char *sql, char *zErrMsg, int rc, const v
    rc = sqlite3_exec(db, sql, callback_select, (void*)data, &zErrMsg);
    if( rc != SQLITE_OK )
    {
+      fprintf(stderr, "SQL-Command: %s", sql);
       fprintf(stderr, "SQL-Operation error in '%s'.\n", funktionsname.c_str());
       fprintf(stderr, "SQL error: %s\n", zErrMsg);
       sqlite3_free(zErrMsg);
@@ -86,7 +87,7 @@ void DB::executeSqlSelect(sqlite3 *db, char *sql, char *zErrMsg, int rc, const v
    else
    {
       fprintf(stderr,"SQL-Operation '%s' executed successfully\n", funktionsname.c_str());
-	   //fprintf(stderr, "SQL-Insert: %s", sql);
+      fprintf(stderr, "SQL-Execute: %s", sql);
   }
    
    //stelle die Schleifenvariable wieder auf 0

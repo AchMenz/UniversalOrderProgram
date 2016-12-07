@@ -24,21 +24,21 @@ Oberflache::Oberflache(QMainWindow *parent) : QMainWindow(parent){
 */
 
 	DB db("db");
-  //db.createTables(Helper::getSqlFromFile("db.sql"));
+    db.createTables(Helper::getSqlFromFile("db.sql"));
 
 	//db.deleteWare("Blatt", "Reh");
 	
 	 // db.createTables(Helper::getSqlFromFile("db.sql"));
 
-	 // db.insertRecordInWarengruppe("Reh", "Hat ein kleines Gehörn.");
-	 // db.insertRecordInWarengruppe("Hirsch", "Hat ein großes Geweih.");
-	 // db.insertRecordInWarengruppe("Wildschwein", "Kann Trüffel erschnüffeln");
+     db.insertRecordInWarengruppe("Reh", "Hat ein kleines Gehörn.");
+     db.insertRecordInWarengruppe("Hirsch", "Hat ein großes Geweih.");
+     db.insertRecordInWarengruppe("Wildschwein", "Kann Trüffel erschnüffeln");
  
-	 // db.insertRecordInWare("Filet", "Reh");
-	 // db.insertRecordInWare("Haxen", "Hirsch");
-	 // db.insertRecordInWare("Blatt", "Reh");
-	 // db.insertRecordInWare("Lende", "Hirsch");
-	 // db.insertRecordInWare("Wurstfleisch", "Wildschwein");
+     db.insertRecordInWare("Filet", "Reh");
+     db.insertRecordInWare("Haxen", "Hirsch");
+     db.insertRecordInWare("Blatt", "Reh");
+     db.insertRecordInWare("Lende", "Hirsch");
+     db.insertRecordInWare("Wurstfleisch", "Wildschwein");
 
 	//std::cout << db.getAlleEmpfaenger()[0].getName() << std::endl;
 	

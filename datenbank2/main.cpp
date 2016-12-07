@@ -38,7 +38,7 @@ int main(int argc, char **argv)
 
 //Ändere Daten
    //db.updateKommentar("Lende", "Hirsch", "Bitte eingefroren.");
-   //db.updatePreisProKg("Haxen", "Hirsch", 4.5);
+   db.updatePreisProKg("Haxen", "Hirsch", 9.5);
    //db.updatePreisProSt("Lende", "Hirsch", 35.45);
    
    //ändert einen Wert in der Tabelle "Absender" oder "Empfänger"
@@ -101,15 +101,15 @@ int main(int argc, char **argv)
 //   };
 
    //Hohle den ersten Empfaenger aus der DB
-   Empfaenger temp2 = db.getErstenEmpfaenger();
-   std::cout << temp2.getName() << ", " << temp2.getAdresse() << ", " << temp2.getEmailadresse() << std::endl;
-
-   Absender temp = db.getErstenAbsender();
-   std::cout << temp.getName() << ", " << temp.getAdresse() << ", " << temp.getEmailadresse() << std::endl;
-
-   //Hohle die erste Info aus InfoBestellung
-   InfoBestellung temp1 = db.getErsteInfoBestellung();
-   std::cout << temp1.getZieldatum() << ", " << temp1.getZielzeit() << ", " << temp1.getKommentar() << std::endl;
+//   Empfaenger temp2 = db.getErstenEmpfaenger();
+//   std::cout << temp2.getName() << ", " << temp2.getAdresse() << ", " << temp2.getEmailadresse() << std::endl;
+//
+//   Absender temp = db.getErstenAbsender();
+//   std::cout << temp.getName() << ", " << temp.getAdresse() << ", " << temp.getEmailadresse() << std::endl;
+//
+//   //Hohle die erste Info aus InfoBestellung
+//   InfoBestellung temp1 = db.getErsteInfoBestellung();
+//   std::cout << temp1.getZieldatum() << ", " << temp1.getZielzeit() << ", " << temp1.getKommentar() << std::endl;
 
 
 //schließe Datenbank
