@@ -153,8 +153,8 @@ void DB::insertRecordInWare(std::string name, std::string warengruppe)
    std::string sqlPrae;
    //Pragma... Damit keine Fremdschlüssel eingetragen werden, die gar nicht existieren.
    sqlPrae = "PRAGMA foreign_keys = on;\n" \
-             "INSERT INTO Ware (Name, Warengruppe, Preis_pro_kg, Preis_pro_St) " \
-             "VALUES ('" + name + "', '" + warengruppe + "', 0, 0);";
+             "INSERT INTO Ware (Name, Warengruppe, Preis_pro_kg, Preis_pro_St, Menge_in_St, Menge_in_Kg) " \
+             "VALUES ('" + name + "', '" + warengruppe + "', 0, 0, 0, 0);";
 
    //konvertiere sqlPrae in char*
    sql = (char*) sqlPrae.c_str();

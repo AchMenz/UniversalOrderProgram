@@ -30,15 +30,15 @@ Oberflache::Oberflache(QMainWindow *parent) : QMainWindow(parent){
 	
 	 // db.createTables(Helper::getSqlFromFile("db.sql"));
 
-	 // db.insertRecordInWarengruppe("Reh", "Hat ein kleines Gehörn.");
-	 // db.insertRecordInWarengruppe("Hirsch", "Hat ein großes Geweih.");
-	 // db.insertRecordInWarengruppe("Wildschwein", "Kann Trüffel erschnüffeln");
+	 db.insertRecordInWarengruppe("Reh", "Hat ein kleines Gehörn.");
+	 db.insertRecordInWarengruppe("Hirsch", "Hat ein großes Geweih.");
+	 db.insertRecordInWarengruppe("Wildschwein", "Kann Trüffel erschnüffeln");
  
-	 // db.insertRecordInWare("Filet", "Reh");
-	 // db.insertRecordInWare("Haxen", "Hirsch");
-	 // db.insertRecordInWare("Blatt", "Reh");
-	 // db.insertRecordInWare("Lende", "Hirsch");
-	 // db.insertRecordInWare("Wurstfleisch", "Wildschwein");
+	 db.insertRecordInWare("Filet", "Reh");
+	 db.insertRecordInWare("Haxen", "Hirsch");
+	 db.insertRecordInWare("Blatt", "Reh");
+	 db.insertRecordInWare("Lende", "Hirsch");
+	 db.insertRecordInWare("Wurstfleisch", "Wildschwein");
 
 	//std::cout << db.getAlleEmpfaenger()[0].getName() << std::endl;
 	
@@ -60,7 +60,8 @@ Oberflache::Oberflache(QMainWindow *parent) : QMainWindow(parent){
     //Empfaenger temp1 = db.getErstenEmpfaenger();
     //std::cout << temp1.getName() << ", " << temp1.getAdresse() << ", " << temp1.getEmailadresse() << std::endl;
     //Empfaenger temp2 = db.getErstenEmpfaenger();
-    //std::cout << temp2.getName() << ", " << temp2.getAdresse() << ", " << temp2.getEmailadresse() << std::endl;
+    //std::co
+    //ut << temp2.getName() << ", " << temp2.getAdresse() << ", " << temp2.getEmailadresse() << std::endl;
 	
 	  Absender ersterAbsender = db.getErstenAbsender();
 	  Empfaenger ersterEmpfaenger = db.getErstenEmpfaenger();
