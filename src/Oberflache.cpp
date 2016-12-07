@@ -320,6 +320,19 @@ void Oberflache::generiereWare(){
 	
 	void Oberflache::zelleaktualisiert(QTableWidgetItem* x){
 		disconnect(WarenTW, 0, 0, 0);
+		DB db("db");
+		
+   // void updatePreisProKg(std::string ware, std::string warengruppe, float preis = 0);
+
+   // //ändert einen Wert in einem Datensatz der Tabelle "Ware"
+   // void updatePreisProSt(std::string ware, std::string warengruppe, float preis = 0);
+   
+   // //ändert einen Wert in einem Datensatz der Tabelle "Ware"
+   // void updateMengeInSt(std::string ware, std::string warengruppe, float mengeSt = 0);
+
+   // //ändert einen Wert in einem Datensatz der Tabelle "Ware"
+   // void updateMengeInKg(std::string ware, std::string warengruppe, float mengeKg = 0);
+		
 		
 		  switch ( x -> column() ) { 
 			  
@@ -331,6 +344,8 @@ void Oberflache::generiereWare(){
 					break;   
 				case 2:
 					warenVector[x -> row()].setPreisProGewicht(x -> text().toFloat());
+					//db.updatePreisProKg(warenVector[x -> row()].getWarenName(), warenVector[x -> row()].getWarenGruppeName(), warenVector[x -> row()].getPreisProGewicht());
+					db.updatePreisProKg("Lende","Hirsch",7.3);
 					break;
 				case 3:
 					warenVector[x -> row()].setPreisProStueck(x -> text().toFloat());
