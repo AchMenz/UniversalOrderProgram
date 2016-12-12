@@ -53,6 +53,7 @@ Oberflache::Oberflache(QMainWindow *parent) : QMainWindow(parent){
 	//warenVector.push_back(Banane);//debugging
 	
 	warenVector = db.getAlleWaren();
+
 	Absender ersterAbsender = db.getErstenAbsender();
 	Empfaenger ersterEmpfaenger = db.getErstenEmpfaenger();
 	
@@ -261,7 +262,7 @@ void Oberflache::generiereWare(){
 				std::stringstream misss;
 				misss<<(warenVector[i3].getMengeInStueck());
 				std::string mis = misss.str();
-				
+
 				std::stringstream gpreisss;
 				gpreisss<<(gpreisd);
 				std::string gpreiss = gpreisss.str();

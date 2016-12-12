@@ -5,6 +5,7 @@
 #include <iomanip>
 
 #include "DB.h"
+#include "Helper.h"
 
 DB::DB(const char* DatabaseName)
 {
@@ -525,7 +526,7 @@ std::vector<Ware> DB::getAlleWaren()
       
       //erzeuge Objekte vom Typ Ware aus der Zwischenspeichermap
       Ware wareTemp(tempMap["Name"], tempMap["Warengruppe"], \
-      std::stof(tempMap["Preis_pro_kg"]), std::stof(tempMap["Preis_pro_St"]), std::stof(tempMap["Menge_in_kg"]), std::stof(tempMap["Menge_in_St"]), tempMap["Kommentar"]);
+      Helper::toFloat(tempMap["Preis_pro_kg"]), Helper::toFloat(tempMap["Preis_pro_St"]), Helper::toFloat(tempMap["Menge_in_kg"]), Helper::toFloat(tempMap["Menge_in_St"]), tempMap["Kommentar"]);
       //füge Objekte vom Typ Ware zum Resultatvektor hinzu
       result.push_back(wareTemp);
    }

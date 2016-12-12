@@ -2,8 +2,8 @@
 #include "Ware.h"
 #include <string>
 
-Ware::Ware(string wn, string wgn, float ppg, float pps, float mig, float mis, string i):
-		warenName(wn), warenGruppeName(wgn), preisProGewicht(ppg), preisProStueck(pps), mengeInGewicht(mig), mengeInStueck(mis){
+Ware::Ware(string wn, string wgn, float ppg, float pps, float mig, float mis, string k):
+		warenName(wn), warenGruppeName(wgn), preisProGewicht(ppg), preisProStueck(pps), mengeInGewicht(mig), mengeInStueck(mis), kommentar(k){
 			
 		}
 
