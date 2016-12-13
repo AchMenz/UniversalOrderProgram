@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <iostream>
+#include <stdlib.h>
 
 #include "DB.h"
 #include "Helper.h"
@@ -21,16 +22,16 @@ int main(int argc, char **argv)
 
 
 //Erzeuge Daten
-   db.insertRecordInWarengruppe("Reh", "Hat ein kleines Gehörn.");
-   db.insertRecordInWarengruppe("Hirsch", "Hat ein großes Geweih.");
- 
-   db.insertRecordInWare("Filet", "Reh");
-   db.insertRecordInWare("Haxen", "Hirsch");
-   db.insertRecordInWare("Blatt", "Reh");
-   db.insertRecordInWare("Lende", "Hirsch");
-   db.insertRecordInWare("Wurstfleisch", "Reh");
-
-   db.insertRecordInAbsenderEmpfaenger("Empfaenger", "Las Kalisz", "Las Kalisz\nStraße des Wildes 123\n04353 Tomnice", "laskalisz@web.pl");
+//   db.insertRecordInWarengruppe("Reh", "Hat ein kleines Gehörn.");
+//   db.insertRecordInWarengruppe("Hirsch", "Hat ein großes Geweih.");
+// 
+//   db.insertRecordInWare("Filet", "Reh");
+//   db.insertRecordInWare("Haxen", "Hirsch");
+//   db.insertRecordInWare("Blatt", "Reh");
+//   db.insertRecordInWare("Lende", "Hirsch");
+//   db.insertRecordInWare("Wurstfleisch", "Reh");
+//
+//   db.insertRecordInAbsenderEmpfaenger("Empfaenger", "Las Kalisz", "Las Kalisz\nStraße des Wildes 123\n04353 Tomnice", "laskalisz@web.pl");
 
 
 
@@ -38,7 +39,7 @@ int main(int argc, char **argv)
 
 //Ändere Daten
    //db.updateKommentar("Lende", "Hirsch", "Bitte eingefroren.");
-   db.updatePreisProKg("Haxen", "Hirsch",9.3);
+   //db.updatePreisProKg("Haxen", "Hirsch",9.3);
    //db.updatePreisProSt("Lende", "Hirsch", 35.45);
    
    //ändert einen Wert in der Tabelle "Absender" oder "Empfänger"
@@ -85,6 +86,9 @@ int main(int argc, char **argv)
 //      std::cout << i.getWarenName() << ", " << i.getWarenGruppeName() << ", " << i.getPreisProGewicht() \
 //      << ", " << i.getPreisProStueck() << ", " << i.getKommentar() << ", " << i.getMengeInStueck() << ", " << i.getMengeInGewicht() << std::endl;
 //   }
+   
+   
+   
 
    //Hohle einen Vector mit Strings von "Empfaenger" aus der DB
 //   std::vector<std::string> testVect = db.getAlleEmpfaengerNamen();
@@ -110,6 +114,60 @@ int main(int argc, char **argv)
 //   //Hohle die erste Info aus InfoBestellung
 //   InfoBestellung temp1 = db.getErsteInfoBestellung();
 //   std::cout << temp1.getZieldatum() << ", " << temp1.getZielzeit() << ", " << temp1.getKommentar() << std::endl;
+
+
+
+     //übergebe Thunderbird einen Emailtext aus den entsprechenden Tabellendaten
+      Absender abs = db.getErstenAbsender();
+      Empfaenger empf = db.getErstenEmpfaenger();
+      InfoBestellung info = db.getErsteInfoBestellung();
+      std::vector<Ware> waren = db.getAlleWaren();
+
+      std::string warentextKg;
+      std::string warentextSt;
+      warentextKg = "";
+      warentextSt = "";
+      
+      //baue zwei Strings auf; einen für Menge in Gewicht und einen für Menge in Stueck
+      for (Ware i : waren)
+      {
+         if (i.getMengeInStueck() == 0 and i.getMengeInGewicht() == 0) 
+         {
+            continue;
+         }   
+         else if (i.getMengeInStueck() != 0 and i.getMengeInGewicht() == 0)
+         {
+             warentextSt += Helper::toString(i.getMengeInStueck()) + " Stück " + i.getWarenGruppeName() + "-" + i.getWarenName() + ". " + i.getKommentar() + "\n";
+         }
+         else if (i.getMengeInStueck() == 0 and i.getMengeInGewicht() != 0)
+         {
+             warentextKg += Helper::toString(i.getMengeInGewicht()) + " kg " + i.getWarenGruppeName() + "-" + i.getWarenName() + ". " + i.getKommentar() + "\n";
+         }
+         else
+         {
+             warentextSt += Helper::toString(i.getMengeInStueck()) + " Stück " + i.getWarenGruppeName() + "-" + i.getWarenName() + ". " + i.getKommentar() + "\n";
+             warentextKg += Helper::toString(i.getMengeInGewicht()) + " kg " + i.getWarenGruppeName() + "-" + i.getWarenName() + ". " + i.getKommentar() + "\n";
+         }
+      };
+
+      //baue den emailText-String auf
+      std::string emailText;
+      emailText =
+      "Absender: " + abs.getName() + "\n" + \
+      abs.getAdresse() + "\n\n" + \
+      "Empfänger: " + empf.getName() + "\n" +
+      empf.getAdresse() + "\n\n" + \
+      "Bestellung für " + info.getZieldatum() + " " + info.getZielzeit() + "\n\n" + \
+      warentextKg + "\n" + \
+      warentextSt + "\n" + \
+      info.getKommentar() + "\n\n" + \
+      "Mit freundlichen Grüßen" + "\n" + \
+      abs.getName() + "\n";
+      
+      //baue den Thunderbirdstring auf, der in der Kommandozeile ausgeführt wird. 
+      std::string thunderbirdString = "thunderbird -compose to=" + empf.getEmailadresse() + ",subject='Bestellung für " + abs.getName() + " für " + info.getZieldatum() + "',body='" + emailText + "'";
+      system(thunderbirdString.c_str());	
+
 
 
 //schließe Datenbank

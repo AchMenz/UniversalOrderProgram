@@ -6,6 +6,8 @@
 #include <QString>
 #include <vector>
 #include <string> 
+#include <stdlib.h>
+#include <algorithm>
 #include <Warengruppe.h>
 #include <QMessageBox>
 #include "Helper.h"
@@ -174,9 +176,60 @@ void Oberflache::generiereWare(){
 	}
 	
 	void Oberflache::versendeEmail(){
-		//JÖRG!!!!
-		//hier soll die email generiert werden und dann mit einem EmailProgramm(Thunderbird) verschickt werden
-		
+    //übergebe Thunderbird einen Emailtext aus den entsprechenden Tabellendaten
+      DB db("db");
+      Absender abs = db.getErstenAbsender();
+      Empfaenger empf = db.getErstenEmpfaenger();
+      InfoBestellung info = db.getErsteInfoBestellung();
+      std::vector<Ware> waren = db.getAlleWaren();
+
+      std::string warentextKg;
+      std::string warentextSt;
+      warentextKg = "";
+      warentextSt = "";
+      
+      //baue zwei Strings auf; einen für Menge in Gewicht und einen für Menge in Stueck
+      for (Ware i : waren)
+      {
+         if (i.getMengeInStueck() == 0 and i.getMengeInGewicht() == 0) 
+         {
+            continue;
+         }   
+         else if (i.getMengeInStueck() != 0 and i.getMengeInGewicht() == 0)
+         {
+             warentextSt += Helper::toString(i.getMengeInStueck()) + " Stueck " + i.getWarenGruppeName() + "-" + i.getWarenName() + ". " + i.getKommentar() + "\n";
+         }
+         else if (i.getMengeInStueck() == 0 and i.getMengeInGewicht() != 0)
+         {
+             warentextKg += Helper::toString(i.getMengeInGewicht()) + " kg " + i.getWarenGruppeName() + "-" + i.getWarenName() + ". " + i.getKommentar() + "\n";
+         }
+         else
+         {
+             warentextSt += Helper::toString(i.getMengeInStueck()) + " Stueck " + i.getWarenGruppeName() + "-" + i.getWarenName() + ". " + i.getKommentar() + "\n";
+             warentextKg += Helper::toString(i.getMengeInGewicht()) + " kg " + i.getWarenGruppeName() + "-" + i.getWarenName() + ". " + i.getKommentar() + "\n";
+         }
+      };
+
+      //baue den emailText-String auf
+      std::string emailText;
+      emailText =
+      "Absender: " + abs.getName() + "\n" + \
+      abs.getAdresse() + "\n\n" + \
+      "Empfaenger: " + empf.getName() + "\n" +
+      empf.getAdresse() + "\n\n" + \
+      "Bestellung fuer " + info.getZieldatum() + " " + info.getZielzeit() + "\n\n" + \
+      warentextKg + "\n" + \
+      warentextSt + "\n" + \
+      info.getKommentar() + "\n\n" + \
+      "Mit freundlichen Grueszen" + "\n" + \
+      abs.getName() + "\n";
+      
+      //ersetze Kommas in emailText, weil die Thunderbird-CLI da einen Bug hat
+      std::replace(emailText.begin(), emailText.end(), ',', ';');
+
+      //baue den Thunderbirdstring auf, der in der Kommandozeile ausgeführt wird. 
+      std::string thunderbirdString = "thunderbird -compose to=" + empf.getEmailadresse() + ",subject='Bestellung: " + abs.getName() + "; Datum: " + info.getZieldatum() + "',body='" + emailText + "'";
+      system(thunderbirdString.c_str());
 	}
 	
 	void Oberflache::generiereWarenGruppe(){
@@ -421,11 +474,11 @@ void Oberflache::generiereWare(){
 		
 		db.updateErstenWertInAbsenderEmpfaenger("Absender", "Name", NameAbsenderEdit->text().toStdString());
 		db.updateErstenWertInAbsenderEmpfaenger("Absender", "Adresse", AdresseAbsenderEdit->toPlainText().toStdString());
-		db.updateErstenWertInAbsenderEmpfaenger("Absender", "Emailadresse", NameAbsenderEdit->text().toStdString());
+		db.updateErstenWertInAbsenderEmpfaenger("Absender", "Emailadresse", EmailAbsenderEdit->text().toStdString());
 		
 		db.updateErstenWertInAbsenderEmpfaenger("Empfaenger", "Name", NameEmpfaengerEdit->text().toStdString());
 		db.updateErstenWertInAbsenderEmpfaenger("Empfaenger", "Adresse", AdresseEmpfaengerEdit->toPlainText().toStdString());
-		db.updateErstenWertInAbsenderEmpfaenger("Empfaenger", "Emailadresse", NameEmpfaengerEdit->text().toStdString());
+		db.updateErstenWertInAbsenderEmpfaenger("Empfaenger", "Emailadresse", EmailEmpfaengerEdit->text().toStdString());
 	}
 	
 	//ALT

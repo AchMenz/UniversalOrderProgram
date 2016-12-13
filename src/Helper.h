@@ -9,6 +9,7 @@ public:
    
    static std::string getSqlFromFile(char* file);
    static float toFloat(std::string stringFloat);
+   static std::string toString(float floatString);
 
 };
 

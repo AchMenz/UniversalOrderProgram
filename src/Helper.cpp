@@ -1,5 +1,7 @@
 #include <fstream>
 #include <boost/lexical_cast.hpp>
+#include <sstream>
+#include <iomanip>
 
 #include "Helper.h"
 
@@ -43,4 +45,12 @@ float Helper::toFloat(std::string stringFloat)
     }
     
     return f;
+}
+
+std::string Helper::toString(float floatString)
+{
+   std::stringstream stream;
+   stream << std::fixed << std::setprecision(2) << floatString;
+   std::string result = stream.str();
+   return result;
 }

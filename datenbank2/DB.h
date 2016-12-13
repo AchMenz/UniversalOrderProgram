@@ -103,10 +103,16 @@ public:
    
    //ändert den Wert in "feld" = "wert" in den Tabellen Empfaenger und Absender wo "Name" = name
    void updateWerteInAbsenderEmpfaenger(std::string tabelle, std::string name, std::string feld, std::string wert);
+
+   //ändert den Wert in "feld" = "wert" in den Tabellen Empfaenger und Absender (nur den für den ersten Datensatz)
+   void updateErstenWertInAbsenderEmpfaenger(std::string tabelle, std::string feld, std::string wert);
+
    
    //fügt in jedem "Menge"-Feld in der DB eine 0 ein
    void clearAllMengeFelder();
 
+   //ändert den Wert in "feld" = "wert" in der Tabelle InfoBestellung
+   void updateWerteInInfoBestellung(std::string feld, std::string wert);
 
 //Deletes
    //löscht eine Ware aud der Tabelle "Ware"

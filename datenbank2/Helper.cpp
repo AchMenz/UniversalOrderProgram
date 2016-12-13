@@ -1,4 +1,7 @@
 #include <fstream>
+#include <boost/lexical_cast.hpp>
+#include <sstream>
+#include <iomanip>
 
 #include "Helper.h"
 
@@ -29,4 +32,25 @@ std::string Helper::getSqlFromFile(char* file)
    }
    
    return s;
+}
+
+float Helper::toFloat(std::string stringFloat)
+{
+    float f;
+    try {
+        f = boost::lexical_cast<float>(stringFloat);
+    } catch(boost::bad_lexical_cast const&) {
+        f = 0;
+        fprintf(stderr, "Not a float typed in.\n");
+    }
+    
+    return f;
+}
+
+std::string Helper::toString(float floatString)
+{
+   std::stringstream stream;
+   stream << std::fixed << std::setprecision(2) << floatString;
+   std::string result = stream.str();
+   return result;
 }

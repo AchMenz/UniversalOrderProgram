@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
+#include <sstream>
+#include <iomanip>
 
 #include "DB.h"
+#include "Helper.h"
 
 DB::DB(const char* DatabaseName)
 {
@@ -79,6 +82,7 @@ void DB::executeSqlSelect(sqlite3 *db, char *sql, char *zErrMsg, int rc, const v
    rc = sqlite3_exec(db, sql, callback_select, (void*)data, &zErrMsg);
    if( rc != SQLITE_OK )
    {
+      fprintf(stderr, "SQL-Command: %s", sql);
       fprintf(stderr, "SQL-Operation error in '%s'.\n", funktionsname.c_str());
       fprintf(stderr, "SQL error: %s\n", zErrMsg);
       sqlite3_free(zErrMsg);
@@ -86,7 +90,7 @@ void DB::executeSqlSelect(sqlite3 *db, char *sql, char *zErrMsg, int rc, const v
    else
    {
       fprintf(stderr,"SQL-Operation '%s' executed successfully\n", funktionsname.c_str());
-	   //fprintf(stderr, "SQL-Insert: %s", sql);
+      fprintf(stderr, "SQL-Execute: %s", sql);
   }
    
    //stelle die Schleifenvariable wieder auf 0
@@ -153,8 +157,8 @@ void DB::insertRecordInWare(std::string name, std::string warengruppe)
    std::string sqlPrae;
    //Pragma... Damit keine Fremdschlüssel eingetragen werden, die gar nicht existieren.
    sqlPrae = "PRAGMA foreign_keys = on;\n" \
-             "INSERT INTO Ware (Name, Warengruppe, Preis_pro_kg, Preis_pro_St) " \
-             "VALUES ('" + name + "', '" + warengruppe + "', 0, 0);";
+             "INSERT INTO Ware (Name, Warengruppe, Preis_pro_kg, Preis_pro_St, Menge_in_St, Menge_in_Kg) " \
+             "VALUES ('" + name + "', '" + warengruppe + "', 0, 0, 0, 0);";
 
    //konvertiere sqlPrae in char*
    sql = (char*) sqlPrae.c_str();
@@ -522,7 +526,7 @@ std::vector<Ware> DB::getAlleWaren()
       
       //erzeuge Objekte vom Typ Ware aus der Zwischenspeichermap
       Ware wareTemp(tempMap["Name"], tempMap["Warengruppe"], \
-      std::stof(tempMap["Preis_pro_kg"]), std::stof(tempMap["Preis_pro_St"]), std::stof(tempMap["Menge_in_kg"]), std::stof(tempMap["Menge_in_St"]), tempMap["Kommentar"]);
+      Helper::toFloat(tempMap["Preis_pro_kg"]), Helper::toFloat(tempMap["Preis_pro_St"]), Helper::toFloat(tempMap["Menge_in_kg"]), Helper::toFloat(tempMap["Menge_in_St"]), tempMap["Kommentar"]);
       //füge Objekte vom Typ Ware zum Resultatvektor hinzu
       result.push_back(wareTemp);
    }
@@ -579,11 +583,16 @@ void DB::updatePreisProKg(std::string ware, std::string warengruppe, float preis
 {
    char *sql;
    
+   //mache einen String aus dem float "preis"
+   stringstream stream;
+   stream << fixed << std::setprecision(2) << preis;
+   std::string spreis = stream.str();
+
    //erstelle zunächst String-SQL-Anweisung
    std::string sqlPrae;
    //Pragma... Damit keine Fremdschlüssel eingetragen werden, die gar nicht existieren.
    sqlPrae = "PRAGMA foreign_keys = on;\n" \
-             "UPDATE Ware SET Preis_pro_kg = '" + std::to_string(preis) + "' \
+             "UPDATE Ware SET Preis_pro_kg = '" + spreis + "' \
              WHERE Name = '" + ware + "' AND Warengruppe = '" + warengruppe + "';";
 
    //konvertiere sqlPrae in char*
@@ -599,12 +608,17 @@ void DB::updatePreisProKg(std::string ware, std::string warengruppe, float preis
 void DB::updatePreisProSt(std::string ware, std::string warengruppe, float preis)
 {
    char *sql;
+
+   //mache einen String aus dem float "preis"
+   stringstream stream;
+   stream << fixed << std::setprecision(2) << preis;
+   std::string spreis = stream.str();
    
    //erstelle zunächst String-SQL-Anweisung
    std::string sqlPrae;
    //Pragma... Damit keine Fremdschlüssel eingetragen werden, die gar nicht existieren.
    sqlPrae = "PRAGMA foreign_keys = on;\n" \
-             "UPDATE Ware SET Preis_pro_St = " + std::to_string(preis) + " \
+             "UPDATE Ware SET Preis_pro_St = '" + spreis + "' \
              WHERE Name = '" + ware + "' AND Warengruppe = '" + warengruppe + "';";
 
    //konvertiere sqlPrae in char*
@@ -621,11 +635,16 @@ void DB::updateMengeInSt(std::string ware, std::string warengruppe, float mengeS
 {
    char *sql;
    
+   //mache einen String aus dem float "mengeSt"
+   stringstream stream;
+   stream << fixed << std::setprecision(2) << mengeSt;
+   std::string smenge = stream.str();
+
    //erstelle zunächst String-SQL-Anweisung
    std::string sqlPrae;
    //Pragma... Damit keine Fremdschlüssel eingetragen werden, die gar nicht existieren.
    sqlPrae = "PRAGMA foreign_keys = on;\n" \
-             "UPDATE Ware SET Menge_in_St = " + std::to_string(mengeSt) + " \
+             "UPDATE Ware SET Menge_in_St = '" + smenge + "' \
              WHERE Name = '" + ware + "' AND Warengruppe = '" + warengruppe + "';";
 
    //konvertiere sqlPrae in char*
@@ -642,11 +661,16 @@ void DB::updateMengeInKg(std::string ware, std::string warengruppe, float mengeK
 {
    char *sql;
    
+   //mache einen String aus dem float "mengeKg"
+   stringstream stream;
+   stream << fixed << std::setprecision(2) << mengeKg;
+   std::string smenge = stream.str();
+   
    //erstelle zunächst String-SQL-Anweisung
    std::string sqlPrae;
    //Pragma... Damit keine Fremdschlüssel eingetragen werden, die gar nicht existieren.
    sqlPrae = "PRAGMA foreign_keys = on;\n" \
-             "UPDATE Ware SET Menge_in_kg = " + std::to_string(mengeKg) + " \
+             "UPDATE Ware SET Menge_in_kg = '" + smenge + "' \
              WHERE Name = '" + ware + "' AND Warengruppe = '" + warengruppe + "';";
 
    //konvertiere sqlPrae in char*
@@ -690,6 +714,46 @@ void DB::updateWerteInAbsenderEmpfaenger(std::string tabelle, std::string name, 
    sqlPrae = "PRAGMA foreign_keys = on;\n" \
              "UPDATE " + tabelle + " SET " + feld + " = '" + wert + "' \
              WHERE Name = '" + name + "';";
+
+   //konvertiere sqlPrae in char*
+   sql = (char*) sqlPrae.c_str();
+   
+   //erzeuge einen String mit dem Funktionsname, der executeSqlSelect übergeben wird
+   std::string funktionsname(__func__);
+   
+   //führe Sql-Code aus
+   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname);
+}
+
+void DB::updateErstenWertInAbsenderEmpfaenger(std::string tabelle, std::string feld, std::string wert)
+{
+   char *sql;
+   
+   //erstelle zunächst String-SQL-Anweisung
+   std::string sqlPrae;
+   //Pragma... Damit keine Fremdschlüssel eingetragen werden, die gar nicht existieren.
+   sqlPrae = "PRAGMA foreign_keys = on;\n" \
+             "UPDATE " + tabelle + " SET " + feld + " = '" + wert + "';";
+
+   //konvertiere sqlPrae in char*
+   sql = (char*) sqlPrae.c_str();
+   
+   //erzeuge einen String mit dem Funktionsname, der executeSqlSelect übergeben wird
+   std::string funktionsname(__func__);
+   
+   //führe Sql-Code aus
+   executeSqlSelect(db, sql, zErrMsg, rc, data, funktionsname);
+}
+
+void DB::updateWerteInInfoBestellung(std::string feld, std::string wert)
+{
+   char *sql;
+   
+   //erstelle zunächst String-SQL-Anweisung
+   std::string sqlPrae;
+   //Pragma... Damit keine Fremdschlüssel eingetragen werden, die gar nicht existieren.
+   sqlPrae = "PRAGMA foreign_keys = on;\n" \
+             "UPDATE InfoBestellung SET " + feld + " = '" + wert + "';";
 
    //konvertiere sqlPrae in char*
    sql = (char*) sqlPrae.c_str();
