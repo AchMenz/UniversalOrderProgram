@@ -163,6 +163,9 @@ void Oberflache::generiereWare(){
          }
       };
 
+      //bearbeite Datumsstring
+      std::string datum = info.getZieldatum();
+      std::replace(datum.begin(), datum.end(), ':', '.');
       //baue den emailText-String auf
       std::string emailText;
       emailText =
@@ -170,7 +173,7 @@ void Oberflache::generiereWare(){
       abs.getAdresse() + "\n\n" + \
       "Empfaenger: " + empf.getName() + "\n" +
       empf.getAdresse() + "\n\n" + \
-      "Bestellung fuer " + info.getZieldatum() + " " + info.getZielzeit() + "\n\n" + \
+      "Bestellung fuer " + datum + " " + info.getZielzeit() + "\n\n" + \
       warentextKg + "\n" + \
       warentextSt + "\n" + \
       info.getKommentar() + "\n\n" + \
@@ -181,7 +184,7 @@ void Oberflache::generiereWare(){
       std::replace(emailText.begin(), emailText.end(), ',', ';');
 
       //baue den Thunderbirdstring auf, der in der Kommandozeile ausgeführt wird. 
-      std::string thunderbirdString = "thunderbird -compose to=" + empf.getEmailadresse() + ",subject='Bestellung: " + abs.getName() + "; Datum: " + info.getZieldatum() + "',body='" + emailText + "'";
+      std::string thunderbirdString = "thunderbird -compose to=" + empf.getEmailadresse() + ",subject='Bestellung: " + abs.getName() + "; Datum: " + datum + "',body='" + emailText + "'";
       system(thunderbirdString.c_str());
 	}
 	
