@@ -29,6 +29,9 @@ class Oberflache : public QMainWindow, public Ui::MainWindow{
 		void zelleaktualisiert(QTableWidgetItem* x);
 		void entferneWarenGruppe();
 		void aktualisiereEinstellungen();
+		void aktualisiereZielDatum(QDate d);
+		void aktualisiereZielZeit(QTime t);
+		void aktualisiereZielKommentar();
 		
 		
 	private:

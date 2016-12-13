@@ -12,9 +12,9 @@ DB::DB(const char* DatabaseName)
    rc = sqlite3_open(DatabaseName, &db);
 
    if( rc ){
-      fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+      // fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
    }else{
-      fprintf(stderr, "Opened database successfully\n");
+      // fprintf(stderr, "Opened database successfully\n");
    }
 }
 
@@ -34,7 +34,7 @@ int DB::callback(void *NotUsed, int argc, char **argv, char **azColName)
 {
    int i;
    for(i=0; i<argc; i++){
-      printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+      //printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
    }
    return 0;
 }
@@ -42,7 +42,7 @@ int DB::callback(void *NotUsed, int argc, char **argv, char **azColName)
 int DB::callback_select(void *data, int argc, char **argv, char **azColName)
 {
    int i;
-   fprintf(stderr, "%s: ", (const char*)data);
+   //fprintf(stderr, "%s: ", (const char*)data);
    
    //leere Tempmap
    temp.clear();
@@ -65,13 +65,13 @@ void DB::executeSqlInsert(sqlite3 *db, char* sql, char *zErrMsg, int rc, std::st
    rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
    if( rc != SQLITE_OK )
    {
-      fprintf(stderr, "SQL-Operation error in '%s'.\n", funktionsname.c_str());
-      fprintf(stderr, "SQL error: %s\n", zErrMsg);
+      // fprintf(stderr, "SQL-Operation error in '%s'.\n", funktionsname.c_str());
+      // fprintf(stderr, "SQL error: %s\n", zErrMsg);
       sqlite3_free(zErrMsg);
    }
    else
    {
-      fprintf(stderr, "SQL-Operation '%s' executed successfully\n", funktionsname.c_str());
+      // fprintf(stderr, "SQL-Operation '%s' executed successfully\n", funktionsname.c_str());
 	   //fprintf(stderr, "SQL-Insert: %s", sql);
    }
 }
@@ -82,15 +82,15 @@ void DB::executeSqlSelect(sqlite3 *db, char *sql, char *zErrMsg, int rc, const v
    rc = sqlite3_exec(db, sql, callback_select, (void*)data, &zErrMsg);
    if( rc != SQLITE_OK )
    {
-      fprintf(stderr, "SQL-Command: %s", sql);
-      fprintf(stderr, "SQL-Operation error in '%s'.\n", funktionsname.c_str());
-      fprintf(stderr, "SQL error: %s\n", zErrMsg);
+      //fprintf(stderr, "SQL-Command: %s", sql);
+      // fprintf(stderr, "SQL-Operation error in '%s'.\n", funktionsname.c_str());
+      // fprintf(stderr, "SQL error: %s\n", zErrMsg);
       sqlite3_free(zErrMsg);
    }
    else
    {
-      fprintf(stderr,"SQL-Operation '%s' executed successfully\n", funktionsname.c_str());
-      fprintf(stderr, "SQL-Execute: %s", sql);
+      //fprintf(stderr,"SQL-Operation '%s' executed successfully\n", funktionsname.c_str());
+      //fprintf(stderr, "SQL-Execute: %s", sql);
   }
    
    //stelle die Schleifenvariable wieder auf 0
@@ -109,19 +109,19 @@ void DB::createTables(std::string sqlFromFile)
    rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
    if( rc != SQLITE_OK )
    {
-      fprintf(stderr, "SQL error: %s\n", zErrMsg);
+      // fprintf(stderr, "SQL error: %s\n", zErrMsg);
       sqlite3_free(zErrMsg);
    }
    else
    {
-      fprintf(stderr, "Table created successfully\n");
+      // fprintf(stderr, "Table created successfully\n");
    }
 }
 
 void DB::closeDatabase()
 {
    sqlite3_close(db);
-   fprintf(stdout, "Database succesfully closed.\n");
+   // fprintf(stdout, "Database succesfully closed.\n");
 }
 
 void DB::insertRecordInWarengruppe(std::string name, std::string kommentar)

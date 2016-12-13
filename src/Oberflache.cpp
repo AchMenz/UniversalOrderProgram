@@ -74,7 +74,33 @@ Oberflache::Oberflache(QMainWindow *parent) : QMainWindow(parent){
 	AdresseEmpfaengerEdit->textCursor().insertText(QString::fromStdString(ersterEmpfaenger.getAdresse()));
     EmailEmpfaengerEdit->insert(QString::fromStdString(ersterEmpfaenger.getEmailadresse()));
 	
+	InfoBestellung i = 	db.getErsteInfoBestellung();
+	string zeitstring = i.getZielzeit();
+	string datumstring = i.getZieldatum();
 	
+	string hs = zeitstring.substr(0,2);
+	string mins = zeitstring.substr(3,2);
+	
+	string ts = datumstring.substr(0,2);
+	string mons = datumstring.substr(3,2);
+	string js = datumstring.substr(6,4);
+	
+	std::string::size_type sz;
+	
+	int h = std::stoi (hs,&sz);
+	int min = std::stoi (mins,&sz);
+	
+	int t = std::stoi (ts,&sz);
+	int mon = std::stoi (mons,&sz);
+	int j = std::stoi (js,&sz);
+	
+	ZeitEdit -> setTime(QTime(h, min, 0, 0));
+	DatumEdit -> setDate(QDate(j, mon, t));
+	ZielzeitKommentarEdit -> textCursor().insertText(QString::fromStdString(i.getKommentar()));
+	
+	// std::cout << datumstring << std::endl;
+	
+
 	
 //Daten werden auf Oberfläche geladen	
 	for(unsigned i3 = 0;i3<warenVector.size();++i3){		
@@ -97,6 +123,11 @@ Oberflache::Oberflache(QMainWindow *parent) : QMainWindow(parent){
 	connect(WarenTW, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(zelleaktualisiert(QTableWidgetItem*)));
 	connect(WarenGruppeEntfPB, SIGNAL(clicked()), this, SLOT(entferneWarenGruppe()));
 	connect(EinstellungenPButton, SIGNAL(clicked()), this, SLOT(aktualisiereEinstellungen()));
+	connect(DatumEdit, SIGNAL(dateChanged(QDate)), this, SLOT(aktualisiereZielDatum(QDate)));
+	connect(ZeitEdit, SIGNAL(timeChanged(QTime)), this, SLOT(aktualisiereZielZeit(QTime)));
+	connect(ZielzeitKommentarEdit, SIGNAL(textChanged()), this, SLOT(aktualisiereZielKommentar()));
+	
+
 	
 }
 
@@ -481,12 +512,38 @@ void Oberflache::generiereWare(){
 		db.updateErstenWertInAbsenderEmpfaenger("Empfaenger", "Emailadresse", EmailEmpfaengerEdit->text().toStdString());
 	}
 	
-	//ALT
-	/*void Oberflache::anzeigenWareEigenschaft(){
-	//zeigt preis und Menge auf Oberfläche an
-		MengenEdit -> clear();
-		PreisEdit -> clear();
+	void Oberflache::aktualisiereZielDatum(QDate d){
+		// std::cout << d.toString().toStdString()<< std::endl;
+		DB db("db");
+		
+				std::stringstream tss;
+				tss<<(d.day());
+				std::string t = tss.str();
+				
+				std::stringstream mss;
+				mss<<(d.month());
+				std::string m = mss.str();
+				
+				std::stringstream jss;
+				jss<<(d.year());
+				std::string j = jss.str();
+		
+		db.updateWerteInInfoBestellung("Zieldatum", t + ":" + m + ":" + j);
+	}
 	
-		MengenEdit -> insert(QString::number(warenVector[WarenList->currentRow()].getMenge()));
-		PreisEdit -> insert(QString::number(warenVector[WarenList->currentRow()].getPreis()));
-	}*/
+	
+		void Oberflache::aktualisiereZielZeit(QTime t){	
+		// std::cout << t.toString().toStdString()<< std::endl;
+		
+		DB db("db");
+		db.updateWerteInInfoBestellung("Zielzeit", t.toString().toStdString());
+		}
+		
+		void Oberflache::aktualisiereZielKommentar(){	
+		// std::cout << "komm"<< std::endl;
+		
+		DB db("db");
+		
+		db.updateWerteInInfoBestellung("Kommentar", ZielzeitKommentarEdit->toPlainText().toStdString());
+		}
+	
