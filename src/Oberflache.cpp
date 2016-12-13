@@ -26,45 +26,11 @@ Oberflache::Oberflache(QMainWindow *parent) : QMainWindow(parent){
 */
 
 	DB db("db");
-    //db.createTables(Helper::getSqlFromFile("db.sql"));
-
-	//db.deleteWare("Blatt", "Reh");
-	
-	 // db.createTables(Helper::getSqlFromFile("db.sql"));
-
-     // db.insertRecordInWarengruppe("Reh", "Hat ein kleines Gehörn.");
-     // db.insertRecordInWarengruppe("Hirsch", "Hat ein großes Geweih.");
-     // db.insertRecordInWarengruppe("Wildschwein", "Kann Trüffel erschnüffeln");
- 
-     // db.insertRecordInWare("Filet", "Reh");
-     // db.insertRecordInWare("Haxen", "Hirsch");
-     // db.insertRecordInWare("Blatt", "Reh");
-     // db.insertRecordInWare("Lende", "Hirsch");
-     // db.insertRecordInWare("Wurstfleisch", "Wildschwein");
-
-	//std::cout << db.getAlleEmpfaenger()[0].getName() << std::endl;
-	
-	//Ware Schinken = Ware("Schinken","Fleisch",3.3,3.4,3.5,3.6,"kommentar Schinken");//debugging
-	//Ware Banane = Ware("Banane","Obst",2.5,2.6,2.7,2.8,"kommentar Banane");//debugging
-	//Ware Paprika = Ware("Paprika","Gemuese",2.4,2.5,2.6,2.7,"kommentar Paprika");//debugging
-	//Ware Salami = Ware("Salami","Fleisch",2.2,2.3,2.4,2.5,"kommentar Salami");//debugging
-	
-	//warenVector.push_back(Salami);//debugging
-	//warenVector.push_back(Schinken);//debugging
-	//warenVector.push_back(Paprika);//debugging
-	//warenVector.push_back(Banane);//debugging
 	
 	warenVector = db.getAlleWaren();
 
 	Absender ersterAbsender = db.getErstenAbsender();
 	Empfaenger ersterEmpfaenger = db.getErstenEmpfaenger();
-	
-		// std::cout << ersterEmpfaenger.getName() << ", " << ersterEmpfaenger.getAdresse() << ", " << ersterEmpfaenger.getEmailadresse() << std::endl;
-		// std::cout << ersterAbsender.getName() << ", " << ersterAbsender.getAdresse() << ", " << ersterAbsender.getEmailadresse() << std::endl;
-
-		 // db.updateWerteInInfoBestellung("Kommentar", "Bitte geben Sie 15 rote Kisten mit.");
-		 // InfoBestellung info = db.getErsteInfoBestellung();
-		// std::cout << info.getZieldatum() << ", " << info.getZielzeit() << ", " << info.getKommentar() << std::endl;
 	
 	NameAbsenderEdit->insert(QString::fromStdString(ersterAbsender.getName()));
 	AdresseAbsenderEdit->textCursor().insertText(QString::fromStdString(ersterAbsender.getAdresse()));
@@ -158,50 +124,6 @@ void Oberflache::generiereWare(){
 	}
 	
 	
-	/*void Oberflache::WareZuBestellListe(){
-		bestelltWarenVector.push_back(warenVector[WarenList->currentRow()]);
-		vector<string> vecStr;
-		string str;
-		
-		
-		
-		
-		for(unsigned i1 = 0;i1<bestelltWarenVector.size();++i1){
-			//itoa(bestelltWarenVector[i1].getMenge(),menge,10); 
-			//itoa(bestelltWarenVector[i1].getPreis(),preis,10); 
-			
-			
-			std::stringstream mengess;
-			mengess<<bestelltWarenVector[i1].getMenge();
-			std::string menge = mengess.str();
-			
-			std::stringstream preisss;
-			preisss<<bestelltWarenVector[i1].getPreis();
-			std::string preis = preisss.str();
-			
-			if(str.find(bestelltWarenVector[i1].getWarenGruppeName() + " " + bestelltWarenVector[i1].getWarenName() + " Menge:" + menge + " Preis:" + preis) == string::npos){
-				//vector zum sortieren
-				vecStr.push_back(bestelltWarenVector[i1].getWarenGruppeName() + " " + bestelltWarenVector[i1].getWarenName() + " Menge:" + menge + " Preis:" + preis);	
-			}
-		}
-		
-		std::sort(vecStr.begin(), vecStr.end());
-		
-		//vector in string geschrieben
-		EinkaufswagenListe -> clear();
-		for(unsigned i2 = 0;i2<vecStr.size();++i2){
-					
-					new QListWidgetItem(QString::fromStdString( vecStr[i2] ), EinkaufswagenListe);
-					
-					
-					str += vecStr[i2];
-					str += "\n";
-				}
-		
-		std::cout << str << std::endl;
-	
-	}*/
-	
 	void Oberflache::beenden(){
 		 qApp->quit();
 	}
@@ -294,15 +216,12 @@ void Oberflache::generiereWare(){
 	void Oberflache::aktualisiereOberflaeche(){	
 		
 		DB db("db");
-		
+		warenVector = db.getAlleWaren();
 		
 		std::vector<std::string> testVect = db.getAlleWarengruppenNamen();
-	//for (std::string i : testVect)
-		// {
-		// std::cout << i << std::endl;
-		// }
-		// std::cout << " " << std::endl;
-		// std::cout << "test" << std::endl;
+		
+		
+			disconnect(WarenTW, 0, 0, 0);
 		
 			WareEntfCB -> clear();
 			WarenGruppeCB -> clear();
@@ -320,7 +239,6 @@ void Oberflache::generiereWare(){
 			}
 		//befüllt Haupttabelle
 			for(unsigned i3 = 0;i3<warenVector.size();++i3){
-				disconnect(WarenTW, 0, 0, 0);
 				WarenTW->insertRow( WarenTW->rowCount() );
 					
 				//std::cout << "Ware: " + warenVector[i3].getWarenName() << std::endl;
