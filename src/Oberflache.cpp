@@ -64,22 +64,9 @@ Oberflache::Oberflache(QMainWindow *parent) : QMainWindow(parent){
 	DatumEdit -> setDate(QDate(j, mon, t));
 	ZielzeitKommentarEdit -> textCursor().insertText(QString::fromStdString(i.getKommentar()));
 	
-	// std::cout << datumstring << std::endl;
+	WareEntfCB -> addItem(QString::fromStdString("test"));
 	
-
-	
-//Daten werden auf Oberfläche geladen	
-	for(unsigned i3 = 0;i3<warenVector.size();++i3){		
-		warenNameVector.push_back(warenVector[i3].getWarenGruppeName() + " " + warenVector[i3].getWarenName());
-	}
-	
-	for(unsigned i4 = 0; i4<db.getAlleWarengruppenNamen().size();++i4){
-		warenGruppeVector.push_back(Warengruppe(db.getAlleWarengruppenNamen()[i4], ""));
-	}
-
-	WarenTW->sortItems(0);
 	this -> aktualisiereOberflaeche();
-	
 	
 	connect(WareHinzuPB, SIGNAL(clicked()), this, SLOT(generiereWare()));
 	connect(schliesenButton, SIGNAL(clicked()), this, SLOT(beenden()));
@@ -93,8 +80,7 @@ Oberflache::Oberflache(QMainWindow *parent) : QMainWindow(parent){
 	connect(ZeitEdit, SIGNAL(timeChanged(QTime)), this, SLOT(aktualisiereZielZeit(QTime)));
 	connect(ZielzeitKommentarEdit, SIGNAL(textChanged()), this, SLOT(aktualisiereZielKommentar()));
 	
-
-	
+	db.closeDatabase();
 }
 
 Oberflache::~Oberflache() {
@@ -103,90 +89,82 @@ Oberflache::~Oberflache() {
 }
 
 void Oberflache::generiereWare(){
-/**
-*erstellt neue Ware mit Daten aus Oberfläche
-*/
+//erstellt neue Ware mit Daten aus Oberfläche
 
-	//WarenGruppeCB
 	DB db("db");
-	
-	Ware w1 = Ware((WarenNameHinzuEdit -> text()).toStdString(),WarenGruppeCB -> currentText().toStdString(),0,0,0,0,"");
-	string s =  w1.getWarenGruppeName()+ " " + w1.getWarenName();
 	
 	db.insertRecordInWare(WarenNameHinzuEdit -> text().toStdString(), WarenGruppeCB -> currentText().toStdString());
 	
-	warenVector.push_back(w1);
-	warenNameVector.push_back(s);
-	std::sort(warenNameVector.begin(), warenNameVector.end());
-	
-	
 		this -> aktualisiereOberflaeche();
-	}
+		db.closeDatabase();
+}
 	
 	
-	void Oberflache::beenden(){
-		 qApp->quit();
-	}
+void Oberflache::beenden(){
+	 qApp->quit();
+}
 	
-	void Oberflache::versendeEmail(){
-    //übergebe Thunderbird einen Emailtext aus den entsprechenden Tabellendaten
-      DB db("db");
-      Absender abs = db.getErstenAbsender();
-      Empfaenger empf = db.getErstenEmpfaenger();
-      InfoBestellung info = db.getErsteInfoBestellung();
-      std::vector<Ware> waren = db.getAlleWaren();
+void Oberflache::versendeEmail(){
+//übergebe Thunderbird einen Emailtext aus den entsprechenden Tabellendaten
+  DB db("db");
+  Absender abs = db.getErstenAbsender();
+  Empfaenger empf = db.getErstenEmpfaenger();
+  InfoBestellung info = db.getErsteInfoBestellung();
+  std::vector<Ware> waren = db.getAlleWaren();
 
-      std::string warentextKg;
-      std::string warentextSt;
-      warentextKg = "";
-      warentextSt = "";
-      
-      //baue zwei Strings auf; einen für Menge in Gewicht und einen für Menge in Stueck
-      for (Ware i : waren)
-      {
-         if (i.getMengeInStueck() == 0 and i.getMengeInGewicht() == 0) 
-         {
-            continue;
-         }   
-         else if (i.getMengeInStueck() != 0 and i.getMengeInGewicht() == 0)
-         {
-             warentextSt += Helper::toString(i.getMengeInStueck()) + " Stueck " + i.getWarenGruppeName() + "-" + i.getWarenName() + ". " + i.getKommentar() + "\n";
-         }
-         else if (i.getMengeInStueck() == 0 and i.getMengeInGewicht() != 0)
-         {
-             warentextKg += Helper::toString(i.getMengeInGewicht()) + " kg " + i.getWarenGruppeName() + "-" + i.getWarenName() + ". " + i.getKommentar() + "\n";
-         }
-         else
-         {
-             warentextSt += Helper::toString(i.getMengeInStueck()) + " Stueck " + i.getWarenGruppeName() + "-" + i.getWarenName() + ". " + i.getKommentar() + "\n";
-             warentextKg += Helper::toString(i.getMengeInGewicht()) + " kg " + i.getWarenGruppeName() + "-" + i.getWarenName() + ". " + i.getKommentar() + "\n";
-         }
-      };
+  std::string warentextKg;
+  std::string warentextSt;
+  warentextKg = "";
+  warentextSt = "";
+  
+  //baue zwei Strings auf; einen für Menge in Gewicht und einen für Menge in Stueck
+  for (Ware i : waren)
+  {
+	 if (i.getMengeInStueck() == 0 and i.getMengeInGewicht() == 0) 
+	 {
+		continue;
+	 }   
+	 else if (i.getMengeInStueck() != 0 and i.getMengeInGewicht() == 0)
+	 {
+		 warentextSt += Helper::toString(i.getMengeInStueck()) + " Stueck " + i.getWarenGruppeName() + "-" + i.getWarenName() + ". " + i.getKommentar() + "\n";
+	 }
+	 else if (i.getMengeInStueck() == 0 and i.getMengeInGewicht() != 0)
+	 {
+		 warentextKg += Helper::toString(i.getMengeInGewicht()) + " kg " + i.getWarenGruppeName() + "-" + i.getWarenName() + ". " + i.getKommentar() + "\n";
+	 }
+	 else
+	 {
+		 warentextSt += Helper::toString(i.getMengeInStueck()) + " Stueck " + i.getWarenGruppeName() + "-" + i.getWarenName() + ". " + i.getKommentar() + "\n";
+		 warentextKg += Helper::toString(i.getMengeInGewicht()) + " kg " + i.getWarenGruppeName() + "-" + i.getWarenName() + ". " + i.getKommentar() + "\n";
+	 }
+  };
 
-      //bearbeite Datumsstring
-      std::string datum = info.getZieldatum();
-      std::replace(datum.begin(), datum.end(), ':', '.');
-      //baue den emailText-String auf
-      std::string emailText;
-      emailText =
-      "Absender: " + abs.getName() + "\n" + \
-      abs.getAdresse() + "\n\n" + \
-      "Empfaenger: " + empf.getName() + "\n" +
-      empf.getAdresse() + "\n\n" + \
-      "Bestellung fuer " + datum + " " + info.getZielzeit() + "\n\n" + \
-      warentextKg + "\n" + \
-      warentextSt + "\n" + \
-      info.getKommentar() + "\n\n" + \
-      "Mit freundlichen Grueszen" + "\n" + \
-      abs.getName() + "\n";
-      
-      //ersetze Kommas in emailText, weil die Thunderbird-CLI da einen Bug hat
-      std::replace(emailText.begin(), emailText.end(), ',', ';');
+  //bearbeite Datumsstring
+  std::string datum = info.getZieldatum();
+  std::replace(datum.begin(), datum.end(), ':', '.');
+  //baue den emailText-String auf
+  std::string emailText;
+  emailText =
+  "Absender: " + abs.getName() + "\n" + \
+  abs.getAdresse() + "\n\n" + \
+  "Empfaenger: " + empf.getName() + "\n" +
+  empf.getAdresse() + "\n\n" + \
+  "Bestellung fuer " + datum + " " + info.getZielzeit() + "\n\n" + \
+  warentextKg + "\n" + \
+  warentextSt + "\n" + \
+  info.getKommentar() + "\n\n" + \
+  "Mit freundlichen Grueszen" + "\n" + \
+  abs.getName() + "\n";
+  
+  //ersetze Kommas in emailText, weil die Thunderbird-CLI da einen Bug hat
+  std::replace(emailText.begin(), emailText.end(), ',', ';');
 
-      //baue den Thunderbirdstring auf, der in der Kommandozeile ausgeführt wird. 
-      std::string thunderbirdString = "thunderbird -compose to=" + empf.getEmailadresse() + ",subject='Bestellung: " + abs.getName() + "; Datum: " + datum + "',body='" + emailText + "'";
-      system(thunderbirdString.c_str());
-	}
+  //baue den Thunderbirdstring auf, der in der Kommandozeile ausgeführt wird. 
+  std::string thunderbirdString = "thunderbird -compose to=" + empf.getEmailadresse() + ",subject='Bestellung: " + abs.getName() + "; Datum: " + datum + "',body='" + emailText + "'";
+		system(thunderbirdString.c_str());
+	
+	db.closeDatabase();
+}
 	
 	void Oberflache::generiereWarenGruppe(){
 /**
@@ -194,47 +172,45 @@ void Oberflache::generiereWare(){
 */
 		
 		DB db("db");
-		
-		Warengruppe wp = Warengruppe(WarenGruppeHinzuEdit -> text().toStdString(),WarenGruppeInfoEdit -> toPlainText().toStdString());
+
 		db.insertRecordInWarengruppe(WarenGruppeHinzuEdit -> text().toStdString(), WarenGruppeInfoEdit -> toPlainText().toStdString());
-		
-		warenGruppeVector.push_back(wp);
-		
-		//kann das weg?
-		vector<string> v;
-		
-		for(unsigned i1 = 0;i1<warenGruppeVector.size();++i1){
-		string s = warenGruppeVector[i1].getWarenGruppeName();
-		v.push_back(s);
-		}
-		
-		std::sort(v.begin(), v.end());
-	
-		//for(unsigned i2 = 0;i2<v.size();++i2){
-		//	WarenGruppeCB -> addItem(QString::fromStdString( v[i2] ));
-		//}
 		this -> aktualisiereOberflaeche();
+		db.closeDatabase();
 	}
 	
 	void Oberflache::aktualisiereOberflaeche(){	
+		disconnect(WarenTW, 0, 0, 0);
 		
 		DB db("db");
+
+		WareEntfCB -> clear();
+		WarenGruppeCB -> clear();
+		WarenGruppeEntfCB -> clear();
+		WarenTW -> setRowCount(0);
+		
+		warenGruppeVector.clear();
+		warenNameVector.clear();
+		warenVector.clear();
+		
 		warenVector = db.getAlleWaren();
 		
-		std::vector<std::string> testVect = db.getAlleWarengruppenNamen();
+		//Vektor aus Strings, WarenGruppe + WarenName
+		for(unsigned i3 = 0;i3<warenVector.size();++i3){		
+		warenNameVector.push_back(warenVector[i3].getWarenGruppeName() + " " + warenVector[i3].getWarenName());
+		}
+		
+		//Vektor aus Objekten von WarenGruppe
+		for(unsigned i4 = 0; i4<db.getAlleWarengruppenNamen().size();++i4){
+		warenGruppeVector.push_back(Warengruppe(db.getAlleWarengruppenNamen()[i4], ""));
+		}
 		
 		
-			disconnect(WarenTW, 0, 0, 0);
 		
-			WareEntfCB -> clear();
-			WarenGruppeCB -> clear();
-			WarenGruppeEntfCB -> clear();
-			WarenTW -> setRowCount(0);
-			
 		//befüllt combo box um waren zu löschen
-			for(unsigned i1 = 0;i1<warenNameVector.size();++i1){
-				WareEntfCB -> addItem(QString::fromStdString(warenNameVector[i1]));
-			}
+		for(unsigned i1 = 0;i1<warenNameVector.size();++i1){
+			WareEntfCB -> addItem(QString::fromStdString(warenNameVector[i1]));
+			std::cout << "WarenNameVector " + warenNameVector[i1]<< std::endl;
+		}
 		//befüllt combo box um warengruppen zu löschen
 			for(unsigned i2 = 0;i2<warenGruppeVector.size();++i2){
 				WarenGruppeEntfCB -> addItem(QString::fromStdString(warenGruppeVector[i2].getWarenGruppeName()));
@@ -301,33 +277,33 @@ void Oberflache::generiereWare(){
 				WarenTW->sortItems(0);
 				
 			}
-			connect(WarenTW, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(zelleaktualisiert(QTableWidgetItem*)));
+		connect(WarenTW, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(zelleaktualisiert(QTableWidgetItem*)));	
+		db.closeDatabase();
 	}
 	
 	void Oberflache::entferneWare(){
 		string s = 	WareEntfCB -> currentText().toStdString();
 		DB db("db");
-		//int z = 0;
+		
 		for(unsigned i1 = 0;i1<warenVector.size();++i1){
-				//std::cout << warenVector[i1].getWarenGruppeName() + " " + warenVector[i1].getWarenName() << std::endl;
-				//z++;
-			if( (warenVector[i1].getWarenGruppeName()+ " " + warenVector[i1].getWarenName() ).compare(s) == 0){
-				std::cout << "Ware: " + warenVector[i1].getWarenName() << std::endl;
-				std::cout << "WarenGruppe: " + warenVector[i1].getWarenGruppeName() << std::endl;
+			if( (warenVector[i1].getWarenGruppeName()+ " " + warenVector[i1].getWarenName() ).compare(WareEntfCB -> currentText().toStdString()) == 0){
+				//std::cout << "Ware: " + warenVector[i1].getWarenName() << std::endl;
+				//std::cout << "WarenGruppe: " + warenVector[i1].getWarenGruppeName() << std::endl;
 				db.deleteWare(warenVector[i1].getWarenName(), warenVector[i1].getWarenGruppeName());
-				warenVector.erase(warenVector.begin()+ i1 );
+				//warenVector.erase(warenVector.begin()+ i1 );
 				break;
 			}
 		}
-		for(unsigned i2 = 0;i2<warenNameVector.size();++i2){
-			//std::cout << warenNameVector[i2] << std::endl;
-			if(warenNameVector[i2].compare(s) == 0){
-				warenNameVector.erase(warenNameVector.begin() + i2 );
-				break;
-			}
-		}
+		// for(unsigned i2 = 0;i2<warenNameVector.size();++i2){
+			// //std::cout << warenNameVector[i2] << std::endl;
+			// if(warenNameVector[i2].compare(s) == 0){
+				// warenNameVector.erase(warenNameVector.begin() + i2 );
+				// break;
+			// }
+		//}
 		this -> aktualisiereOberflaeche();
 		
+		db.closeDatabase();
 	}
 	
 	void Oberflache::zelleaktualisiert(QTableWidgetItem* x){
@@ -382,6 +358,7 @@ void Oberflache::generiereWare(){
 		
 		this -> aktualisiereOberflaeche();
 		
+		db.closeDatabase();
 		//connect(WarenTW, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(zelleaktualisiert(QTableWidgetItem*)));
 	}
 	
@@ -407,6 +384,7 @@ void Oberflache::generiereWare(){
 			msgBox.setText("Warengruppe konnte nicht entfernt werden, weil noch eine Ware mit dieser Warengruppe existiert.");
 			msgBox.exec();
 		}
+		db.closeDatabase();
 	}
 	
 	void Oberflache::aktualisiereEinstellungen(){
@@ -450,6 +428,8 @@ void Oberflache::generiereWare(){
 				std::string j = jss.str();
 		
 		db.updateWerteInInfoBestellung("Zieldatum", t + ":" + m + ":" + j);
+		
+		db.closeDatabase();
 	}
 	
 	
@@ -458,6 +438,8 @@ void Oberflache::generiereWare(){
 		
 		DB db("db");
 		db.updateWerteInInfoBestellung("Zielzeit", t.toString().toStdString());
+		
+		db.closeDatabase();
 		}
 		
 		void Oberflache::aktualisiereZielKommentar(){	
@@ -466,5 +448,7 @@ void Oberflache::generiereWare(){
 		DB db("db");
 		
 		db.updateWerteInInfoBestellung("Kommentar", ZielzeitKommentarEdit->toPlainText().toStdString());
+		
+		db.closeDatabase();
 		}
 	
